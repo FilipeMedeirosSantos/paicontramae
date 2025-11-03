@@ -201,7 +201,7 @@
             cursor: zoom-in; /* Indica que a imagem é clicável para zoom */
         }
         
-        /* NOVAS SETAS DO CARROSSEL */
+        /* NOVAS SETAS DO CARROSSEL - CORRIGIDAS PARA MOBILE */
         .carousel-arrow {
             position: absolute;
             top: 50%;
@@ -218,6 +218,11 @@
             transition: background 0.3s;
             box-shadow: 0 0 0 3px #000;
             user-select: none; /* Impede que o texto da seta seja selecionado */
+            width: 50px; /* Largura fixa para melhor toque em mobile */
+            height: 50px; /* Altura fixa para melhor toque em mobile */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .carousel-arrow:hover { background: rgba(0, 77, 0, 0.8); }
         .carousel-arrow.prev { left: 15px; }
@@ -341,7 +346,7 @@
             cursor: default; /* Cursor padrão na imagem (diferente do fundo) */
         }
 
-        /* Responsive adjustments */
+        /* Responsive adjustments - CORREÇÕES PARA MOBILE */
         @media (max-width: 1024px) {
             .container {
                 max-width: 95%;
@@ -370,6 +375,13 @@
                 font-size: 0.95em;
                 padding: 16px 25px;
                 min-height: 65px;
+            }
+            
+            /* Ajustes do carrossel para tablet */
+            .carousel-arrow {
+                font-size: 2em;
+                width: 45px;
+                height: 45px;
             }
         }
         
@@ -432,17 +444,32 @@
                 font-size: 1.3em;
             }
             
+            /* CORREÇÕES DO CARROSSEL PARA MOBILE */
             .carousel {
-                aspect-ratio: 4 / 3;
+                aspect-ratio: 4 / 3; /* Proporção mais adequada para mobile */
+                max-height: 60vh; /* Limita a altura máxima em mobile */
             }
 
-            /* Esconde setas em telas muito pequenas (opcional) */
+            /* Ajuste das setas para mobile */
             .carousel-arrow {
-                font-size: 1.8em;
-                padding: 3px 8px;
-                left: 10px;
+                font-size: 1.5em; /* Tamanho adequado para mobile */
+                width: 40px; /* Área de toque maior */
+                height: 40px; /* Área de toque maior */
+                padding: 5px; /* Padding interno ajustado */
+                left: 5px; /* Posicionamento ajustado */
+                right: 5px; /* Posicionamento ajustado */
             }
-            .carousel-arrow.next { right: 10px; }
+            .carousel-arrow.prev { left: 5px; }
+            .carousel-arrow.next { right: 5px; }
+            
+            /* Ajuste dos indicadores para mobile */
+            .carousel-indicators {
+                bottom: 10px;
+            }
+            .carousel-indicators button {
+                width: 10px;
+                height: 10px;
+            }
             
             .cta-buttons { 
                 flex-direction: column; 
@@ -489,6 +516,18 @@
                 font-size: 1.1em;
             }
             
+            /* Ajustes finos do carrossel para telas muito pequenas */
+            .carousel {
+                aspect-ratio: 3 / 4; /* Proporção mais vertical para mobile pequeno */
+                max-height: 50vh; /* Limita ainda mais a altura */
+            }
+            
+            .carousel-arrow {
+                font-size: 1.2em;
+                width: 35px;
+                height: 35px;
+            }
+            
             .cta-button {
                 font-size: 0.75em;
                 padding: 12px 15px;
@@ -515,6 +554,17 @@
             .bug-button {
                 padding: 8px 12px;
                 font-size: 0.55em;
+            }
+            
+            /* Ajustes finais do carrossel para telas muito pequenas */
+            .carousel {
+                max-height: 45vh;
+            }
+            
+            .carousel-arrow {
+                font-size: 1em;
+                width: 30px;
+                height: 30px;
             }
         }
     </style>
@@ -600,7 +650,7 @@
                         <img src="gregorio.png" alt="Cena do jogo - Cidade noite">
                     </div>
                     <div class="carousel-slide">
-                        <img src="casa engenho noite.png" alt="Cena do jogo - Cidade noite">
+                        <img src="floresta 3 noite new.png" alt="Cena do jogo - Cidade noite">
                     </div>
                     <div class="carousel-slide">
                         <img src="navio africa.png" alt="Cena do jogo - Cidade noite">
@@ -738,4 +788,3 @@
     </script>
 </body>
 </html>
-
