@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Relatar Bug - Jogo "Pai contra Mãe"</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-image: url('muroalt.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            font-family: 'Press Start 2P', cursive;
+            color: #FFFFFF;
+            padding: 50px;
+            image-rendering: pixelated;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container { 
+            width: 100%; 
+            max-width: 1400px;
+            margin: 0 auto; 
+            position: relative; 
+        }
+        .pixel-border { 
+            position: relative; 
+            border: 4px solid #FFFFFF; 
+            box-shadow: 0 0 0 4px #000000; 
+            background: rgba(0, 100, 0, 0.8); 
+        }
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px 30px;
+            background: #004d00; 
+            margin-bottom: 25px;
+        }
+        header h1 { 
+            font-size: 1.8em;
+            text-shadow: 3px 3px 0 #000; 
+            letter-spacing: 1px; 
+            white-space: nowrap;
+        }
+        nav ul { 
+            list-style: none; 
+            display:flex; 
+            gap:25px;
+            flex-wrap: wrap;
+        }
+        nav a { 
+            color:#FFFFFF; 
+            text-decoration:none; 
+            font-size:0.95em;
+            padding:10px 12px;
+            transition:all .2s; 
+            text-shadow:1px 1px 0 #000; 
+            position: relative;
+        }
+        nav a:hover, nav a.active { 
+            color:#FFFF00; 
+            transform: translateY(-2px); 
+        }
+        nav a:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #FFFF00;
+            transition: width 0.3s;
+        }
+        nav a:hover:after, nav a.active:after { 
+            width: 100%; 
+        }
+        .content-box { 
+            width: 100%; 
+            padding: 35px;
+            margin-bottom: 30px; 
+            position: relative; 
+        }
+        .content-box h2 { 
+            text-align: center; 
+            font-size: 2em;
+            text-shadow: 3px 3px 0 #000; 
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 4px solid #FFFFFF; 
+            color: #FFFF00; 
+        }
+        fieldset { 
+            border: none; 
+            margin-top: 35px;
+            position: relative; 
+            padding: 25px;
+            background: rgba(0,77,0,0.6); 
+        }
+        legend { 
+            font-size: 1.4em;
+            background-color:#004d00; 
+            padding:12px 25px;
+            border:4px solid #FFF; 
+            margin-bottom:25px;
+            color:#FFFF00; 
+            text-shadow:2px 2px 0 #000; 
+            box-shadow:0 0 0 4px #000; 
+        }
+        label { 
+            display:block; 
+            margin-top:25px;
+            margin-bottom:15px;
+            font-size:0.95em;
+            line-height:1.6;
+            text-shadow:1px 1px 0 #000; 
+            padding-left:30px;
+            position:relative; 
+        }
+        label:before { 
+            content: ">"; 
+            position:absolute; 
+            left:0; 
+            top:0; 
+            color:#FFFF00; 
+            font-size: 1.2em;
+        }
+        input[type="text"], input[type="email"], textarea, select {
+            width:100%; 
+            padding:15px;
+            border:4px solid; 
+            border-color:#000 #fff #fff #000; 
+            background-color:#004d00; 
+            color:#FFF;
+            font-family:'Press Start 2P', cursive; 
+            font-size:0.95em;
+            margin-top:8px;
+            display:block;
+            line-height: 1.6;
+        }
+        input:focus, textarea:focus, select:focus { 
+            outline: 4px dashed #FFFF00; 
+            outline-offset:2px; 
+        }
+        .submit-container { 
+            margin-top:50px;
+            text-align:center; 
+        }
+        button[type="submit"] {
+            display:inline-block; 
+            padding:18px 45px;
+            background:#8B0000; 
+            color:#FFF; 
+            border:4px solid; 
+            border-color:#fff #000 #000 #fff;
+            font-family:'Press Start 2P', cursive; 
+            font-size:1.2em;
+            cursor:pointer; 
+            text-shadow:2px 2px 0 #000; 
+            position:relative; 
+            overflow:hidden;
+            transition: all 0.2s;
+        }
+        button[type="submit"]:hover { 
+            background:#A52A2A; 
+            color:#FFFF00; 
+            transform:translateY(-3px); 
+        }
+        footer { 
+            text-align:center; 
+            padding:25px;
+            font-size:0.85em;
+            color:#AAA; 
+            text-shadow:1px 1px 0 #000; 
+            margin-top:25px;
+            line-height: 1.6;
+        }
+        .success-message { 
+            text-align:center; 
+            padding:40px;
+            color:#FFFF00; 
+            font-size: 1.1em;
+            line-height: 1.8;
+            display: none;
+        }
+        .error-message { 
+            background: #0e13b6; 
+            color: #ffffff; 
+            padding: 20px;
+            margin: 20px 0;
+            border: 4px solid #1100ff;
+            text-shadow: 1px 1px 0 #000;
+            text-align: center;
+            font-size: 0.95em;
+            line-height: 1.6;
+            display: none;
+        }
+        
+        /* Botão Flutuante de Bug */
+        .bug-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            padding: 15px 25px;
+            background: #8B0000;
+            color: #FFF;
+            border: 4px solid;
+            border-color: #fff #000 #000 #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8em;
+            cursor: pointer;
+            text-shadow: 2px 2px 0 #000;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 4px 4px 0 #000;
+        }
+        
+        .bug-button:hover {
+            background: #A52A2A;
+            color: #FFFF00;
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 0 #000;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 95%;
+            }
+            
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            nav ul {
+                gap: 10px;
+            }
+            
+            nav a {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+            
+            .content-box {
+                padding: 20px;
+            }
+            
+            .content-box h2 {
+                font-size: 1.5em;
+            }
+            
+            legend {
+                font-size: 1.1em;
+                padding: 10px 20px;
+            }
+            
+            label {
+                font-size: 0.85em;
+                padding-left: 25px;
+            }
+            
+            input[type="text"], input[type="email"], textarea, select {
+                padding: 12px;
+                font-size: 0.85em;
+            }
+            
+            button[type="submit"] {
+                padding: 15px 30px;
+                font-size: 1em;
+            }
+            
+            footer {
+                padding: 20px;
+            }
+            
+            .bug-button {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                font-size: 0.7em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.4em;
+            }
+            
+            .content-box h2 {
+                font-size: 1.3em;
+            }
+            
+            legend {
+                font-size: 1em;
+            }
+            
+            label {
+                font-size: 0.8em;
+            }
+            
+            .bug-button {
+                bottom: 15px;
+                right: 15px;
+                padding: 10px 15px;
+                font-size: 0.6em;
+            }
+        }
+        
+        .severity-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .inline-label { 
+            display:inline-flex; 
+            align-items:center; 
+            cursor:pointer; 
+            transition:transform .1s; 
+        }
+        .inline-label:hover { 
+            transform:scale(1.05); 
+        }
+        .inline-label input[type="radio"] { 
+            display:none; 
+        }
+        .inline-label span { 
+            background:#004d00; 
+            padding:12px 18px;
+            border:2px solid #fff; 
+            text-shadow:1px 1px 0 #000; 
+            box-shadow:2px 2px 0 #000; 
+            font-size: 0.95em;
+        }
+        .inline-label input[type="radio"]:checked + span { 
+            background:#000; 
+            color:#FFFF00; 
+            border-color:#FFFF00; 
+            transform:scale(1.1); 
+            box-shadow:0 0 10px #FFFF00, 2px 2px 0 #000; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="pixel-border">
+            <h1>PAI CONTRA MÃE</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="download.html">Download</a></li>
+                    <li><a href="pesquisa.html">Pesquisa</a></li>
+                    <li><a href="material.html">Material</a></li>
+                    <li><a href="tutoriais.html">Tutoriais</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="bug-report">
+                <div class="content-box pixel-border" id="form-wrapper">
+                    <h2>RELATAR BUG</h2>
+                    <div id="error-container" class="error-message"></div>
+                    <div id="success-message" class="success-message" aria-live="polite">
+                        <h2>OBRIGADO!</h2>
+                        <p>Seu relatório de bug foi enviado com sucesso.</p>
+                        <p><a href="index.html" style="color:#FFFF00; text-decoration:none;">← Voltar à página inicial</a></p>
+                    </div>
+                    
+                    <form id="bugForm" name="bugForm" autocomplete="off">
+                        <fieldset>
+                            <legend>INFORMAÇÕES DE CONTATO</legend>
+                            <label for="nome">Seu nome (opcional):</label>
+                            <input type="text" id="nome" name="Nome" placeholder="Como gostaria de ser chamado">
+
+                            <label for="email">Seu email (opcional):</label>
+                            <input type="email" id="email" name="Email" placeholder="Para receber atualizações sobre o bug">
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>DETALHES DO BUG</legend>
+                            <label for="titulo_bug">Título do bug:</label>
+                            <input type="text" id="titulo_bug" name="TituloBug" required placeholder="Descreva brevemente o problema">
+
+                            <label for="descricao_bug">Descrição detalhada do bug:</label>
+                            <textarea id="descricao_bug" name="DescricaoBug" rows="6" required placeholder="Descreva o que aconteceu, quando e onde"></textarea>
+
+                            <label for="passos_reproduzir">Passos para reproduzir o bug:</label>
+                            <textarea id="passos_reproduzir" name="PassosReproduzir" rows="4" placeholder="Descreva os passos para que possamos reproduzir o problema"></textarea>
+
+                            <label for="comportamento_esperado">Comportamento esperado:</label>
+                            <textarea id="comportamento_esperado" name="ComportamentoEsperado" rows="3" placeholder="O que deveria acontecer normalmente"></textarea>
+
+                            <label for="comportamento_observado">Comportamento observado:</label>
+                            <textarea id="comportamento_observado" name="ComportamentoObservado" rows="3" placeholder="O que realmente aconteceu"></textarea>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>INFORMAÇÕES TÉCNICAS</legend>
+                            <label>Gravidade do bug:</label>
+                            <div class="severity-options">
+                                <label class="inline-label"><input type="radio" name="Gravidade" value="Baixa" required><span>Baixa</span></label>
+                                <label class="inline-label"><input type="radio" name="Gravidade" value="Media"><span>Média</span></label>
+                                <label class="inline-label"><input type="radio" name="Gravidade" value="Alta"><span>Alta</span></label>
+                                <label class="inline-label"><input type="radio" name="Gravidade" value="Critica"><span>Crítica</span></label>
+                            </div>
+
+                            <label for="plataforma">Plataforma:</label>
+                            <select id="plataforma" name="Plataforma">
+                                <option value="" disabled selected>Selecione a plataforma</option>
+                                <option value="Windows">Windows</option>
+                                <option value="Mac">Mac</option>
+                                <option value="Linux">Linux</option>
+                                <option value="Android">Android</option>
+                                <option value="iOS">iOS</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+
+                            <label for="navegador">Navegador (se aplicável):</label>
+                            <select id="navegador" name="Navegador">
+                                <option value="" disabled selected>Selecione o navegador</option>
+                                <option value="Chrome">Chrome</option>
+                                <option value="Firefox">Firefox</option>
+                                <option value="Safari">Safari</option>
+                                <option value="Edge">Edge</option>
+                                <option value="Outro">Outro</option>
+                                <option value="Nao Aplicavel">Não Aplicável</option>
+                            </select>
+
+                            <label for="versao_jogo">Versão do jogo:</label>
+                            <input type="text" id="versao_jogo" name="VersaoJogo" placeholder="Ex: 1.0.0 (se souber)">
+
+                            <label for="outras_informacoes">Outras informações técnicas:</label>
+                            <textarea id="outras_informacoes" name="OutrasInformacoes" rows="3" placeholder="Qualquer informação adicional que possa ajudar"></textarea>
+                        </fieldset>
+
+                        <div class="submit-container">
+                            <button type="submit" id="submit-button">ENVIAR RELATÓRIO</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <footer class="pixel-border">
+            <p>Página de relatório de bugs - Jogo "Pai contra Mãe" - Todos os direitos reservados © 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('bugForm');
+            const errorContainer = document.getElementById('error-container');
+            const successMessage = document.getElementById('success-message');
+            const formWrapper = document.getElementById('form-wrapper');
+
+            function showThankYou(submitBtn) {
+                errorContainer.style.display = 'none';
+                if (form) form.style.display = 'none';
+                successMessage.style.display = 'block';
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = "ENVIADO";
+                }
+
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const submitButton = document.getElementById('submit-button');
+                submitButton.disabled = true;
+                submitButton.textContent = "ENVIANDO...";
+
+                errorContainer.style.display = 'none';
+                successMessage.style.display = 'none';
+                errorContainer.textContent = '';
+
+                const data = {};
+                
+                data['Nome'] = document.getElementById('nome').value;
+                data['Email'] = document.getElementById('email').value;
+                data['TituloBug'] = document.getElementById('titulo_bug').value;
+                data['DescricaoBug'] = document.getElementById('descricao_bug').value;
+                data['PassosReproduzir'] = document.getElementById('passos_reproduzir').value;
+                data['ComportamentoEsperado'] = document.getElementById('comportamento_esperado').value;
+                data['ComportamentoObservado'] = document.getElementById('comportamento_observado').value;
+                data['Plataforma'] = document.getElementById('plataforma').value;
+                data['Navegador'] = document.getElementById('navegador').value;
+                data['VersaoJogo'] = document.getElementById('versao_jogo').value;
+                data['OutrasInformacoes'] = document.getElementById('outras_informacoes').value;
+                
+                const gravidade = document.querySelector('input[name="Gravidade"]:checked');
+                data['Gravidade'] = gravidade ? gravidade.value : '';
+
+                const scriptURL = "https://script.google.com/macros/s/AKfycby6O70bDY5XN9v2SJpTdqcrhktNAVu8h5HFn9LgJstbTD-rgb9aFpKxJKKMvrCXQfUfYg/exec";
+                
+                const corsProxy = "https://corsproxy.io/?";
+                const targetURL = encodeURIComponent(scriptURL);
+
+                fetch(corsProxy + targetURL, {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: { 
+                        "Content-Type": "application/json" 
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        console.warn('Resposta de rede não foi OK, status:', response.status);
+                    }
+                    return response.json().catch(() => ({}));
+                })
+                .then(res => {
+                    showThankYou(submitButton);
+                    try { form.reset(); } catch(e) {}
+                })
+                .catch(err => {
+                    console.error('Erro de fetch:', err);
+                    showThankYou(submitButton);
+                    try { form.reset(); } catch(e) {}
+                });
+            });
+        });
+    </script>
+</body>
+</html>

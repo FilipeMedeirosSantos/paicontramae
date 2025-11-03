@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutoriais - Pai Contra Mãe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-image: url('floresta_luarn.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            font-family: 'Press Start 2P', cursive;
+            color: #FFFFFF;
+            padding: 10px;
+            image-rendering: pixelated;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 1400px; /* Aumentado de 1200px para 1400px */
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Pixel border effect */
+        .pixel-border {
+            position: relative;
+            border: 4px solid #FFFFFF;
+            box-shadow: 0 0 0 4px #000000;
+            background: rgba(0, 100, 0, 0.8);
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px; /* Aumentado o padding */
+            background: #004d00;
+            margin-bottom: 25px; /* Aumentada a margem */
+        }
+        header h1 {
+            font-size: 1.8em; /* Aumentado o tamanho */
+            text-shadow: 3px 3px 0 #000;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        nav ul { 
+            list-style: none; 
+            display: flex; 
+            gap: 25px; /* Aumentado o gap */
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 0.95em; /* Aumentado ligeiramente */
+            padding: 10px 12px; /* Aumentado o padding */
+            transition: all 0.2s;
+            position: relative;
+            text-shadow: 1px 1px 0 #000;
+        }
+        nav a:hover, nav a.active { color: #FFFF00; transform: translateY(-2px); }
+        nav a:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #FFFF00;
+            transition: width 0.3s;
+        }
+        nav a:hover:after, nav a.active:after { width: 100%; }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 30px; /* Aumentado o padding */
+            text-align: center;
+            margin-bottom: 35px; /* Aumentada a margem */
+        }
+        .hero h2 {
+            font-size: 2.2em; /* Aumentado o tamanho */
+            text-shadow: 4px 4px 0 #000;
+            margin-bottom: 25px; /* Aumentada a margem */
+            color: #FFFF00;
+            line-height: 1.4;
+        }
+        .hero p {
+            font-size: 1.05em; /* Aumentado ligeiramente */
+            line-height: 1.8; /* Aumentado o line-height */
+            max-width: 1000px; /* Aumentado a largura máxima */
+            margin-bottom: 35px; /* Aumentada a margem */
+            text-shadow: 2px 2px 0 #000;
+            text-align: justify;
+            hyphens: auto; /* Melhora a quebra de palavras */
+        }
+
+        /* Tutorial Sections */
+        .tutorial-section {
+            padding: 35px; /* Aumentado o padding */
+            margin-bottom: 35px; /* Aumentada a margem */
+        }
+        .tutorial-section h2 {
+            color: #FFFF00;
+            margin-bottom: 25px; /* Aumentada a margem */
+            text-shadow: 3px 3px 0 #000;
+            font-size: 1.8em; /* Aumentado o tamanho */
+            border-bottom: 3px solid #FFFF00;
+            padding-bottom: 15px;
+        }
+        .tutorial-section h3 {
+            color: #FFFF00;
+            margin: 30px 0 20px; /* Aumentada a margem */
+            text-shadow: 2px 2px 0 #000;
+            font-size: 1.4em; /* Aumentado o tamanho */
+        }
+
+        /* Tutorial Content */
+        .tutorial-content {
+            background: rgba(0, 77, 0, 0.7);
+            padding: 25px; /* Aumentado o padding */
+            margin-bottom: 25px; /* Aumentada a margem */
+            line-height: 1.8; /* Aumentado o line-height */
+        }
+        .tutorial-content p {
+            font-size: 0.95em; /* Aumentado ligeiramente */
+            line-height: 1.8; /* Aumentado o line-height */
+            margin-bottom: 20px; /* Aumentada a margem */
+            text-shadow: 1px 1px 0 #000;
+        }
+        .tutorial-content ol, .tutorial-content ul {
+            margin-left: 25px; /* Aumentada a margem */
+            margin-bottom: 25px; /* Aumentada a margem */
+        }
+        .tutorial-content li {
+            font-size: 0.95em; /* Aumentado ligeiramente */
+            line-height: 1.8; /* Aumentado o line-height */
+            margin-bottom: 15px; /* Aumentada a margem */
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        /* Code and Command Examples */
+        .code-block {
+            background: rgba(0, 0, 0, 0.7);
+            border: 3px solid #FFFFFF;
+            padding: 20px; /* Aumentado o padding */
+            margin: 20px 0; /* Aumentada a margem */
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 0.95em; /* Aumentado ligeiramente */
+            line-height: 1.6;
+            border-radius: 4px;
+        }
+        .code-comment { color: #AAAAAA; }
+        .code-command { color: #FFFF00; }
+        .code-path { color: #00FFFF; }
+
+        /* Image Examples */
+        .image-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Aumentado o minmax */
+            gap: 25px; /* Aumentado o gap */
+            margin: 35px 0; /* Aumentada a margem */
+        }
+        .image-example {
+            border: 4px solid #FFFFFF;
+            box-shadow: 0 0 0 4px #000000;
+            overflow: hidden;
+            transition: transform 0.3s;
+            position: relative;
+        }
+        .image-example:hover {
+            transform: scale(1.03);
+        }
+        .image-example img {
+            width: 100%;
+            height: auto;
+            display: block;
+            image-rendering: pixelated;
+        }
+        .image-caption {
+            padding: 12px; /* Aumentado o padding */
+            background: rgba(0, 0, 0, 0.7);
+            font-size: 0.85em; /* Aumentado ligeiramente */
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* Note Box */
+        .note-box {
+            background: rgba(255, 204, 0, 0.2);
+            border: 3px solid #FFCC00;
+            padding: 20px; /* Aumentado o padding */
+            margin: 25px 0; /* Aumentada a margem */
+            border-radius: 4px;
+        }
+        .note-box h4 {
+            color: #FFCC00;
+            margin-bottom: 15px; /* Aumentada a margem */
+            font-size: 1.1em; /* Aumentado o tamanho */
+            text-shadow: 1px 1px 0 #000;
+        }
+        .note-box p {
+            font-size: 0.9em; /* Aumentado ligeiramente */
+            line-height: 1.8; /* Aumentado o line-height */
+            margin-bottom: 0;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        /* Download Section */
+        .download-section {
+            padding: 35px; /* Aumentado o padding */
+            text-align: center;
+        }
+        .download-section h2 {
+            color: #FFFF00;
+            margin-bottom: 35px; /* Aumentada a margem */
+            text-shadow: 3px 3px 0 #000;
+            font-size: 1.8em; /* Aumentado o tamanho */
+            border-bottom: 3px solid #FFFF00;
+            padding-bottom: 15px;
+        }
+        .download-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Aumentado o minmax */
+            gap: 25px; /* Aumentado o gap */
+        }
+        .download-item {
+            background: rgba(0, 77, 0, 0.7);
+            padding: 25px; /* Aumentado o padding */
+            border: 4px solid #FFFFFF;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .download-item:hover {
+            background: rgba(0, 100, 0, 0.9);
+            transform: translateY(-5px);
+        }
+        .download-item h3 {
+            color: #FFFF00;
+            margin-bottom: 20px; /* Aumentada a margem */
+            text-shadow: 2px 2px 0 #000;
+            font-size: 1.2em; /* Aumentado o tamanho */
+        }
+        .download-item p {
+            font-size: 0.85em; /* Aumentado ligeiramente */
+            line-height: 1.7; /* Aumentado o line-height */
+            margin-bottom: 20px; /* Aumentada a margem */
+            flex-grow: 1;
+        }
+        .download-btn {
+            display: inline-block;
+            padding: 12px 25px; /* Aumentado o padding */
+            background: #8B0000;
+            color: white;
+            border: 4px solid;
+            border-color: #fff #000 #000 #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9em; /* Aumentado ligeiramente */
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            text-shadow: 2px 2px 0 #000;
+            margin-top: auto;
+        }
+        .download-btn:hover {
+            background: #A52A2A;
+            color: #FFFF00;
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px; /* Aumentado o padding */
+            font-size: 0.8em; /* Aumentado ligeiramente */
+            color: #AAA;
+            text-shadow: 1px 1px 0 #000;
+            margin-top: 25px; /* Aumentada a margem */
+            line-height: 1.6;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 95%;
+            }
+            
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            .download-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .image-examples {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            nav ul {
+                gap: 10px;
+            }
+            
+            nav a {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+            
+            .hero {
+                padding: 30px 15px;
+            }
+            
+            .hero h2 {
+                font-size: 1.6em;
+            }
+            
+            .hero p {
+                font-size: 0.9em;
+                text-align: left;
+            }
+            
+            .tutorial-section {
+                padding: 20px;
+            }
+            
+            .tutorial-section h2 {
+                font-size: 1.4em;
+            }
+            
+            .tutorial-section h3 {
+                font-size: 1.2em;
+            }
+            
+            .tutorial-content {
+                padding: 20px;
+            }
+            
+            .code-block {
+                padding: 15px;
+                font-size: 0.85em;
+            }
+            
+            .image-examples {
+                grid-template-columns: 1fr;
+            }
+            
+            .download-section {
+                padding: 20px;
+            }
+            
+            .download-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .download-item {
+                padding: 20px;
+            }
+            
+            .download-item h3 {
+                font-size: 1.1em;
+            }
+            
+            .download-btn {
+                padding: 10px 20px;
+                font-size: 0.8em;
+            }
+            
+            footer {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.4em;
+            }
+            
+            .hero h2 {
+                font-size: 1.4em;
+            }
+            
+            .tutorial-section h2 {
+                font-size: 1.2em;
+            }
+            
+            .tutorial-section h3 {
+                font-size: 1.1em;
+            }
+            
+            .download-section h2 {
+                font-size: 1.4em;
+            }
+            
+            .download-item h3 {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="pixel-border">
+            <h1>PAI CONTRA MÃE</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="download.html">Download</a></li>
+                    <li><a href="pesquisa.html">Pesquisa</a></li>
+                    <li><a href="material.html">Material</a></li>
+                    <li><a href="tutoriais.html" class="active">Tutoriais</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero pixel-border">
+                <h2>TUTORIAIS REN'PY</h2>
+            </section>
+
+            <section class="pixel-border tutorial-section">
+                <h2>Introdução ao Desenvolvimento de Narrativas Interativas com Ren'Py</h2>
+                
+                <div class="tutorial-content">
+                    <p>O presente material didático tem como objetivo principal oferecer uma introdução formal e estruturada ao desenvolvimento de narrativas interativas utilizando o motor de jogo Ren'Py. Reconhecido por sua acessibilidade e poder, 
+                        o Ren'Py se estabeleceu como uma ferramenta proeminente para criadores, escritores e artistas que desejam transformar suas visões criativas em experiências digitais imersivas, comumente conhecidas como Visual Novels.
+                    <p>Este guia foi concebido para instruir iniciantes, mesmo aqueles sem qualquer conhecimento prévio em lógica de programação, a dominar os fundamentos essenciais da plataforma. Ao longo das seções subsequentes, o usuário será conduzido por um processo metodológico que abrange desde a instalação do ambiente de desenvolvimento e a criação de um novo projeto, até as etapas finais de compilação e distribuição de uma obra interativa funcional.
+                    </p>
+                    <p>Serão abordados, de forma clara e objetiva, os pilares da criação no Ren'Py, incluindo: a sintaxe para a declaração de personagens; a estruturação de cenas com diálogos, imagens de fundo e elementos visuais; a implementação de menus de escolha que permitem a criação de rotas narrativas ramificadas; a integração de elementos multimídia como trilhas sonoras e efeitos de áudio; e, por fim, o processo técnico para empacotar o projeto final em um formato executável e distribuível.
+                    </p>
+                    <p>Ao final deste tutorial, espera-se que o participante possua a competência necessária para estruturar e desenvolver suas próprias narrativas interativas, compreendendo o fluxo de trabalho essencial do Ren'Py e estando apto a dar os primeiros passos na criação de seus próprios jogos.
+                    </p>
+                    
+                    <h3>PRÉ-REQUISITOS</h3>
+                    <ul>
+                        <li>Ren'py instalado no computador</li>
+                        <li>Pacote de assets baixado</li>
+                        <li>VSCode instalado</li>
+                    </ul>
+                    
+                    <h3>EXTRAÇÃO DE ARQUIVOS</h3>
+                    
+                    <li>
+                        <strong>Passo 1: Como Instalar e Criar um Projeto</strong>
+                        <p>Primeiro, precisamos da ferramenta!</p>
+                        <ol>
+                        <li>Baixe o Ren'Py: Vá ao site oficial <a href="https://www.renpy.org" target="_blank" rel="noopener">renpy.org</a> e baixe a versão mais recente. É de graça!</li>
+                        <li>Descompacte: O Ren'Py virá em um arquivo .zip ou similar. Extraia essa pasta para um lugar de fácil acesso no seu computador (como a Área de Trabalho).</li>
+                        <li>Abra o Ren'Py: Dentro da pasta, clique no executável (será algo como <code>renpy.exe</code> no Windows).</li>
+                        <li>
+                            Crie seu Projeto:
+                            <ol>
+                            <li>No programa que abriu (o "Launcher"), clique em "+ Criar Novo Projeto".</li>
+                            <li>Ele vai pedir um nome para o projeto. Vamos chamar o nosso de "Minha Aventura".</li>
+                            <li>Escolha a resolução (pode deixar a padrão, 1280x720).</li>
+                            <li>Escolha um esquema de cores (apenas para a interface, pode ser qualquer um).</li>
+                            <li>Pronto! O Ren'Py vai criar todos os arquivos necessários.</li>
+                            </ol>
+                        </li>
+                        <li>Para começar a escrever nossa história, vá em "Abrir Diretório" e selecione a pasta <code>game</code>. Dentro dela, abra o arquivo <code>script.rpy</code> com um editor de texto (o próprio Ren'Py recomenda o Atom ou VS Code, que são ótimos e gratuitos). É nesse arquivo que a mágica acontece!</li>
+                        </ol>
+                    </li>
+                    </ol>
+
+
+
+                    <h3>PASSO 2: Dando Vida à Cena - Personagens, Fundos e Falas</h3>
+                    
+                    <li>
+                        <strong>2.1 - Onde Escrevemos a História: Entendendo o script.rpy e o label start</strong>
+                        <p>Abra seu arquivo <code>script.rpy</code>. É aqui que todo o roteiro do jogo será escrito. O elemento mais básico é o <code>label</code>.</p>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Todo jogo em Ren'Py precisa de um "label start" para saber onde começar.</span><br>
+                        <span class="code-command">label</span> start:<br>
+                        &nbsp;&nbsp;<span class="code-comment"># O código da sua história começa AQUI.</span><br>
+                        &nbsp;&nbsp;<span class="code-comment"># Note o espaço no início desta linha!</span>
+                        </div>
+
+                        <p><strong>Ponto de Atenção - A Indentação:</strong> Tudo que acontece dentro de um label precisa ser recuado com espaço/tab. Se esquecer, o jogo dará erro!</p>
+                    </li>
+
+                    <li>
+                        <strong>2.2 - Definindo os Personagens: Os Atores da Sua Peça</strong>
+                        <p>Antes que um personagem fale, precisamos defini-lo. Isso é feito com <code>define</code> no topo do arquivo.</p>
+
+                        <div class="code-block">
+                        <span class="code-comment"># --- Bloco de Definição de Personagens ---</span><br>
+                        <span class="code-comment"># Coloque isso no topo do seu script.rpy</span><br><br>
+                        <span class="code-command">define</span> l = Character("Leo", color="<span class="code-path">#4dff4d</span>")<br>
+                        <span class="code-command">define</span> a = Character("Ana", color="<span class="code-path">#ff66b3</span>")
+                        </div>
+                    </li>
+
+                    <li>
+                        <strong>2.3 - Criando o Cenário: Onde Tudo Acontece</strong>
+                        <p>O palco da cena é o fundo (background). Salve suas imagens em <code>game/images</code> (ex: <code>parque.jpg</code>).</p>
+
+                        <div class="code-block">
+                        <span class="code-command">label</span> start:<br>
+                        &nbsp;&nbsp;<span class="code-comment"># Limpa a tela e coloca a imagem de fundo</span><br>
+                        &nbsp;&nbsp;<span class="code-command">scene</span> parque
+                        </div>
+                    </li>
+
+                    <li>
+                        <strong>2.4 - As Falas: Dando Voz aos Personagens e ao Narrador</strong>
+                        <p>Para fazer um personagem falar, use seu apelido definido.</p>
+
+                        <div class="code-block">
+                        l "Uau! Que dia lindo para estar no parque."<br><br>
+                        "O sol da tarde criava longas sombras na grama verde."
+                        </div>
+
+                        <p>No exemplo acima: <br>
+                        – <code>l</code> faz o personagem Leo falar. <br>
+                        – Uma linha apenas entre aspas é uma narração.</p>
+                    </li>
+
+                    <li>
+                        <strong>Juntando Tudo: Sua Primeira Cena Completa</strong>
+
+                        <div class="code-block">
+                        <span class="code-comment"># --- Bloco de Definição de Personagens ---</span><br>
+                        <span class="code-command">define</span> l = Character("Leo", color="<span class="code-path">#4dff4d</span>")<br>
+                        <span class="code-command">define</span> a = Character("Ana", color="<span class="code-path">#ff66b3</span>")<br><br>
+
+                        <span class="code-comment"># --- Início do Jogo ---</span><br>
+                        <span class="code-command">label</span> start:<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># 1. Definimos o cenário</span><br>
+                        &nbsp;&nbsp;<span class="code-command">scene</span> parque<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># 2. Narração inicial</span><br>
+                        &nbsp;&nbsp;"Era uma tarde ensolarada e tranquila no parque da cidade."<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># 3. Diálogo entre personagens</span><br>
+                        &nbsp;&nbsp;l "Finalmente um pouco de paz."<br>
+                        &nbsp;&nbsp;a "Paz? Você chama isso de paz? Estou entediada!"<br>
+                        &nbsp;&nbsp;l "Mas o tédio às vezes faz parte da paz, não acha?"<br><br>
+
+                        &nbsp;&nbsp;<span class="code-command">return</span>
+                        </div>
+                    </li>
+                   
+
+                    <h3>PASSO 3: Direção de Cena - Posições, Transições e Dinamismo</h3>
+                    
+                    <li>
+                        <strong>3.1 - O Comando show: Colocando Personagens em Cena</strong>
+                        <p>O comando <code>show</code> coloca um personagem (ou qualquer imagem) na tela.</p>
+
+                        <div class="code-block">
+                        <span class="code-command">show</span> leo feliz
+                        </div>
+
+                        <p>Se o personagem já estiver na tela, usar <code>show</code> novamente troca a expressão:</p>
+
+                        <div class="code-block">
+                        l "Que dia lindo!"<br><br>
+                        <span class="code-command">show</span> leo surpreso<br><br>
+                        l "Espera... aquilo é um disco voador?!"
+                        </div>
+                    </li>
+
+                    <li>
+                        <strong>3.2 - Onde Eles Ficam: Posicionando Personagens com <code>at</code></strong>
+                        <p>Por padrão, o personagem aparece no centro. Podemos posicioná-lo usando <code>at</code>:</p>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Lembre-se, o cenário vem primeiro.</span><br>
+                        <span class="code-command">scene</span> parque<br><br>
+
+                        <span class="code-comment"># Colocamos cada personagem em um lado da tela.</span><br>
+                        <span class="code-command">show</span> leo feliz at left<br>
+                        <span class="code-command">show</span> ana curiosa at right<br><br>
+
+                        l "Finalmente consegui te trazer para o meu lugar favorito."<br><br>
+                        a "Até que é bonito mesmo. Mas o que viemos fazer aqui?"
+                        </div>
+                    </li>
+
+                    <li>
+                        <strong>3.3 - A Mágica da Edição: Transições com <code>with</code></strong>
+                        <p>As transições suavizam mudanças visuais, tornando-as mais cinematográficas.</p>
+
+                        <p><u>Exemplo de transição de cenário:</u></p>
+                        <div class="code-block">
+                        <span class="code-comment"># A cena muda com efeito de dissolução.</span><br>
+                        <span class="code-command">scene</span> biblioteca <span class="code-command">with</span> dissolve
+                        </div>
+
+                        <p><u>Exemplo de transição de personagem:</u></p>
+                        <div class="code-block">
+                        <span class="code-comment"># A Ana aparece suavemente, não "pisca" na tela.</span><br>
+                        <span class="code-command">show</span> ana feliz at right <span class="code-command">with</span> dissolve
+                        </div>
+                    </li>
+
+                    <li>
+                        <strong>3.4 - Fim de Cena: Escondendo Personagens com <code>hide</code></strong>
+                        <p>Para remover personagens usamos <code>hide</code>. Também podemos adicionar transições:</p>
+
+                        <div class="code-block">
+                        l "Bom, preciso ir agora. A gente se fala depois!"<br><br>
+                        <span class="code-comment"># O personagem Leo sai com efeito de dissolução.</span><br>
+                        <span class="code-command">hide</span> leo <span class="code-command">with</span> dissolve<br><br>
+                        a "Tudo bem! Até mais!"
+                        </div>
+                    </li>
+
+                    <li>
+                        <strong>Juntando Tudo: Uma Cena Dinâmica Completa</strong>
+
+                        <div class="code-block">
+                        <span class="code-command">label</span> start:<br>
+                        &nbsp;&nbsp;<span class="code-comment"># A cena começa na biblioteca com fade.</span><br>
+                        &nbsp;&nbsp;<span class="code-command">scene</span> biblioteca <span class="code-command">with</span> fade<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># Leo aparece na esquerda com dissolve.</span><br>
+                        &nbsp;&nbsp;<span class="code-command">show</span> leo pensativo at left <span class="code-command">with</span> dissolve<br><br>
+
+                        &nbsp;&nbsp;l "Hmm, não consigo encontrar o livro que eu queria."<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># Ana entra pela direita.</span><br>
+                        &nbsp;&nbsp;<span class="code-command">show</span> ana sorrindo at right <span class="code-command">with</span> dissolve<br><br>
+
+                        &nbsp;&nbsp;a "Procurando por alguma coisa, Leo?"<br><br>
+
+                        &nbsp;&nbsp;<span class="code-command">show</span> leo surpreso at left<br><br>
+
+                        &nbsp;&nbsp;l "Ana! Que susto! Não vi você chegar."<br><br>
+                        &nbsp;&nbsp;a "Vim te ajudar. Mas agora preciso ir, só passei pra dar um oi."<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># Ana sai da cena suavemente.</span><br>
+                        &nbsp;&nbsp;<span class="code-command">hide</span> ana <span class="code-command">with</span> dissolve<br><br>
+
+                        &nbsp;&nbsp;l "Ah... tudo bem então. Obrigado."<br><br>
+
+                        &nbsp;&nbsp;<span class="code-command">return</span>
+                        </div>
+                    </li>
+
+                    <h3>PASSO 4 : A Trilha Sonora da Sua História - Músicas e Efeitos Sonoros</h3>
+                    
+                    <li>
+                        <strong>4.1 - Organizando Seus Arquivos de Áudio</strong>
+                        <p>Coloque seus arquivos de áudio na pasta <code>audio</code> dentro de <code>game</code> do projeto.</p>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Estrutura básica de pastas</span><br>
+                        <span class="code-path">game/</span><span class="code-path">audio/</span><br><br>
+
+                        <span class="code-comment"># Formatos recomendados</span><br>
+                        <span class="code-path">.ogg</span> <span class="code-comment"># melhor equilíbrio entre qualidade e tamanho</span><br>
+                        <span class="code-path">.mp3</span> <span class="code-comment"># amplamente suportado</span><br>
+                        <span class="code-path">.wav</span> <span class="code-comment"># alto tamanho, usado para SFX curtos</span>
+                        </div>
+                    </li>
+
+                    <li>
+                        <strong>4.2 - A Música de Fundo (BGM): Criando a Atmosfera</strong>
+                        <p>Use o canal <code>music</code> para músicas de fundo — elas entram em loop automaticamente.</p>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Iniciando uma música com fade-in</span><br>
+                        <span class="code-command">play</span> <span class="code-command">music</span> <span class="code-path">"tema_principal.ogg"</span> <span class="code-command">fadein</span> <span class="code-path">2.0</span><br><br>
+
+                        l "Gosto da música deste lugar. Me deixa mais calmo."
+                        </div>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Parando a música com fade-out</span><br>
+                        <span class="code-command">stop</span> <span class="code-command">music</span> <span class="code-command">fadeout</span> <span class="code-path">3.0</span><br><br>
+
+                        l "Mas agora... preciso de silêncio para me concentrar."
+                        </div>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Trocando de música com crossfade (fadeout + fadein)</span><br>
+                        a "Espere... o que é aquilo se movendo nas sombras?"<br><br>
+
+                        <span class="code-command">play</span> <span class="code-command">music</span> <span class="code-path">"tema_suspense.mp3"</span>
+                        <span class="code-command">fadeout</span> <span class="code-path">1.0</span>
+                        <span class="code-command">fadein</span> <span class="code-path">1.0</span><br><br>
+
+                        l "Não pode ser... achei que estávamos sozinhos."
+                        </div>
+                    </li>
+
+                    <li>
+                        <strong>4.3 - Efeitos Sonoros (SFX): Os Sons do Mundo</strong>
+                        <p>Use o canal <code>sound</code> para efeitos curtos — eles tocam apenas uma vez.</p>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Tocando um efeito sonoro único</span><br>
+                        a "Você ouviu isso?"<br><br>
+
+                        <span class="code-command">play</span> <span class="code-command">sound</span> <span class="code-path">"galho_quebrando.wav"</span><br><br>
+
+                        l "!!"
+                        </div>
+
+                        <p><em>Observação:</em> não use <code>play music</code> para SFX — senão o som ficará em loop.</p>
+                    </li>
+
+                    <li>
+                        <strong>Juntando Tudo: Uma Cena com Atmosfera Sonora Completa</strong>
+
+                        <div class="code-block">
+                        <span class="code-command">label</span> start:<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># A cena começa com uma música calma.</span><br>
+                        &nbsp;&nbsp;<span class="code-command">play</span> <span class="code-command">music</span> <span class="code-path">"musica_parque.ogg"</span> <span class="code-command">fadein</span> <span class="code-path">2.0</span><br><br>
+
+                        &nbsp;&nbsp;<span class="code-command">scene</span> parque <span class="code-command">with</span> dissolve<br>
+                        &nbsp;&nbsp;<span class="code-command">show</span> leo feliz <span class="code-command">at</span> center<br><br>
+
+                        &nbsp;&nbsp;l "Que dia perfeito para ler um livro aqui fora."<br><br>
+
+                        &nbsp;&nbsp;"De repente, um barulho veio dos arbustos."<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># Um efeito sonoro é tocado para dar um susto.</span><br>
+                        &nbsp;&nbsp;<span class="code-command">play</span> <span class="code-command">sound</span> <span class="code-path">"barulho_arbusto.ogg"</span><br><br>
+
+                        &nbsp;&nbsp;<span class="code-command">show</span> leo surpreso<br><br>
+
+                        &nbsp;&nbsp;l "O que foi isso?"<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># Troca a música para suspense com crossfade.</span><br>
+                        &nbsp;&nbsp;<span class="code-command">play</span> <span class="code-command">music</span> <span class="code-path">"musica_misterio.mp3"</span>
+                        <span class="code-command">fadeout</span> <span class="code-path">2.0</span>
+                        <span class="code-command">fadein</span> <span class="code-path">1.0</span><br><br>
+
+                        &nbsp;&nbsp;"O barulho ficou mais alto, parecendo passos se aproximando."<br><br>
+
+                        &nbsp;&nbsp;l "Tem... tem alguém aí?"<br><br>
+
+                        &nbsp;&nbsp;<span class="code-command">return</span>
+                        </div>
+                    </li>
+
+                    <h3>PASSO 5 : O Coração da Interatividade - Menus e Escolhas</h3>
+                    <li>
+                        <strong>5.1 - A Anatomia de um menu</strong>
+                        <p>Exemplo de menu simples:</p>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Uma fala que antecede a escolha</span><br>
+                        l "E agora? O que vamos fazer?"<br><br>
+
+                        <span class="code-command">menu</span>:<br>
+                        &nbsp;&nbsp;<span class="code-comment"># Primeira opção</span><br>
+                        &nbsp;&nbsp;"Ir para a biblioteca estudar.":<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;a "Ótima ideia! Conhecimento é poder!"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;l "Concordo plenamente."<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-command">jump</span> cena_biblioteca<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># Segunda opção</span><br>
+                        &nbsp;&nbsp;"Ficar no parque e relaxar.":<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;l "Prefiro aproveitar o sol mais um pouco. O dia está lindo."<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;a "Tudo bem, sem pressa então."<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-command">jump</span> cena_parque_final
+                        </div>
+                    </li>
+
+                    <li>
+                        <strong>5.2 - Dica de Mestre: Opções que Aparecem ou Somem (Escolhas Condicionais)</strong>
+                        <p>Exemplo de uso de variáveis para condicionar escolhas:</p>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Antes do label start, definimos nossas variáveis</span><br>
+                        <span class="code-command">default</span> encontrou_chave = False
+                        </div>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Jogador encontra a chave em algum ponto da história</span><br>
+                        l "Olha! Uma chave brilhando debaixo do banco."<br>
+                        $ encontrou_chave = True <span class="code-comment"># O '$' indica uma linha de código Python</span>
+                        </div>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Menu com opção condicional</span><br>
+                        <span class="code-command">menu</span>:<br>
+                        &nbsp;&nbsp;"Empurrar a porta com força.":<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;l "Não adianta, está trancada."<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-command">jump</span> tentar_de_novo<br><br>
+
+                        &nbsp;&nbsp;"Usar a chave" if encontrou_chave == True:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment"># Só aparece se a variável 'encontrou_chave' for True</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;l "Vou tentar usar aquela chave que encontrei..."<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-command">play</span> <span class="code-command">sound</span> <span class="code-path">"som_destrancando.ogg"</span><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-command">jump</span> porta_aberta
+                        </div>
+
+                        <p><em>Explicação:</em> A linha <code>"Usar a chave" if encontrou_chave == True:</code> garante que a opção só aparece se a variável for verdadeira. Isso permite que o jogador veja consequências de suas ações anteriores, tornando o jogo mais interativo e recompensador.</p>
+                    </li>
+                    <h3>PASSO 6 : Arquitetura da História - Rotas com label, jump e call</h3>
+                    <li>
+                        <strong>6.1 - label: Os Capítulos e Cenas do Seu Roteiro</strong>
+                        <p>Exemplo de label:</p>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Um label que marca o início do segundo ato da história</span><br>
+                        <span class="code-command">label</span> ato_2_a_descoberta:<br>
+                        &nbsp;&nbsp;<span class="code-comment"># O conteúdo da cena vem aqui, indentado</span><br>
+                        &nbsp;&nbsp;"O mistério começava a se aprofundar."
+                        </div>
+                    </li>
+
+                    <li>
+                        <strong>6.2 - jump: A Viagem Sem Volta</strong>
+                        <p>Exemplo de jump conectando escolhas a cenas:</p>
+
+                        <div class="code-block">
+                        <span class="code-command">menu</span>:<br>
+                        &nbsp;&nbsp;"Ir para a biblioteca estudar.":<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;a "Ótima ideia! Conhecimento é poder!"<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-command">jump</span> cena_biblioteca<br><br>
+
+                        &nbsp;&nbsp;"Ficar no parque e relaxar.":<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;l "Prefiro aproveitar o sol mais um pouco."<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-command">jump</span> cena_parque_final
+                        </div>
+
+                        <div class="code-block">
+                        <span class="code-comment"># --- AS ROTAS DA HISTÓRIA ---</span><br>
+                        <span class="code-command">label</span> cena_biblioteca:<br>
+                        &nbsp;&nbsp;scene biblioteca with dissolve<br>
+                        &nbsp;&nbsp;a "Ok, qual livro você estava procurando?"<br>
+                        &nbsp;&nbsp;<span class="code-command">return</span> <span class="code-comment"># Termina a cena</span><br><br>
+
+                        <span class="code-command">label</span> cena_parque_final:<br>
+                        &nbsp;&nbsp;scene parque<br>
+                        &nbsp;&nbsp;l "Ah, que paz... Acho que vou tirar um cochilo."<br>
+                        &nbsp;&nbsp;<span class="code-command">return</span>
+                        </div>
+                    </li>
+
+                    <li>
+                        <strong>6.3 - call e return: A Visita com Volta Garantida</strong>
+                        <p>Exemplo de cena reutilizável com call:</p>
+
+                        <div class="code-block">
+                        <span class="code-command">label</span> cena_principal:<br>
+                        &nbsp;&nbsp;l "Sempre que sinto o cheiro de chuva, eu me lembro daquele dia..."<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># O jogo "visita" a cena da lembrança</span><br>
+                        &nbsp;&nbsp;<span class="code-command">call</span> lembranca_da_chuva<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># Após o 'return', o jogo volta para cá</span><br>
+                        &nbsp;&nbsp;l "Enfim... melhor não pensar mais nisso."<br>
+                        &nbsp;&nbsp;"Leo balançou a cabeça, afastando as memórias."<br>
+                        &nbsp;&nbsp;<span class="code-command">return</span>
+                        </div>
+
+                        <div class="code-block">
+                        <span class="code-command">label</span> lembranca_da_chuva:<br>
+                        &nbsp;&nbsp;scene parque chovendo with fade<br>
+                        &nbsp;&nbsp;"A chuva caía impiedosamente naquele dia."<br>
+                        &nbsp;&nbsp;"As gotas batiam no guarda-chuva, um som constante e melancólico."<br>
+                        &nbsp;&nbsp;l "(Eu não deveria ter deixado ela ir...)"<br><br>
+
+                        &nbsp;&nbsp;<span class="code-comment"># O 'return' sinaliza o fim da "visita" e retorna à cena principal</span><br>
+                        &nbsp;&nbsp;<span class="code-command">return</span>
+                        </div>
+
+                        <div class="code-block">
+                        <span class="code-comment"># Resumo de diferenças</span><br>
+                        <span class="code-comment"># jump: vai para outro label permanentemente</span><br>
+                        <span class="code-comment"># call: vai para outro label e volta ao terminar com return</span>
+                        </div>
+                    </li>
+                   
+                    <h3>PASSO 7: Do Roteiro ao Jogo - Compilando e Distribuindo Seu Projeto</h3>
+
+                    <p>7.1 - A Lista de Verificação Final (Antes de Empacotar)</p>
+
+                    <div class="code-block">
+                        <span class="code-comment"># O nome do jogo, que aparece na barra de título da janela</span><br>
+                        <span class="code-command">config.name</span> = "Minha Grande Aventura"<br><br>
+
+                        <span class="code-comment"># A versão do jogo. É bom atualizar a cada nova compilação</span><br>
+                        <span class="code-command">config.version</span> = "1.0"
+                    </div>
+
+                    <p>Ícone do Jogo:</p>
+                    <div class="code-block">
+                        <span class="code-comment"># Para Windows:</span> icon.ico<br>
+                        <span class="code-comment"># Para Mac:</span> icon.icns
+                    </div>
+
+                    <p>7.2 - O Processo de Distribuição (Passo a Passo no Launcher)</p>
+                    <div class="code-block">
+                        <span class="code-comment"># 1. Abra o Launcher do Ren'Py e selecione seu projeto.</span><br>
+                        <span class="code-comment"># 2. Clique em "Distribuir".</span><br>
+                        <span class="code-comment"># 3. Escolha a(s) plataforma(s) desejada(s).</span><br>
+                        <span class="code-comment"># PC: Windows, Mac, Linux</span><br>
+                        <span class="code-comment"># Web: HTML5</span><br>
+                        <span class="code-comment"># Mobile: Android/iOS (opcional)</span><br>
+                        <span class="code-comment"># 4. Clique em "Distribuir" para iniciar a compilação.</span>
+                    </div>
+
+                    <p>7.3 - O Resultado Final: Seus Arquivos de Jogo</p>
+                    <div class="code-block">
+                        <span class="code-comment"># Exemplos de arquivos gerados:</span><br>
+                        <span class="code-comment"># NomeDoProjeto-1.0-pc.zip -> Pacote completo com Windows, Mac e Linux</span><br>
+                        <span class="code-comment"># NomeDoProjeto-1.0-win.zip -> Apenas versão Windows (.exe dentro)</span><br>
+                        <span class="code-comment"># NomeDoProjeto-1.0-mac.zip -> Apenas versão Mac</span><br>
+                        <span class="code-comment"># NomeDoProjeto-1.0-linux.tar.bz2 -> Apenas versão Linux</span><br>
+                        <span class="code-comment"># Nunca compartilhe a pasta do projeto (.rpy, etc.) com jogadores!</span>
+                    </div>
+
+                    <p>Conclusão:</p>
+                    <p>Você percorreu toda a jornada: da ideia inicial à história interativa e, finalmente, a um jogo completo e distribuível. Agora é hora de celebrar sua conquista e compartilhar sua história com o mundo!</p>
+
+
+
+
+
+
+
+
+                    
+                
+
+            <section class="pixel-border tutorial-section">
+                <h2>RECURSOS E FERRAMENTAS ÚTEIS</h2>
+                
+                <div class="download-items">
+                    <div class="download-item">
+                        <h3>Pacote de Assets</h3>
+                        <p>Pacote com arquivos essenciais para a criação do jogo, aqui foi disponibilizado cenários e personagens principais da obra.</p>
+                        <a href="https://www.dropbox.com/scl/fi/asf68v4ecgvsn9o7ij757/assets.zip?rlkey=ombniuht6z2iwpwwydbl8p2fc&st=pdbn19x5&dl=1" class="download-btn">BAIXAR ZIP</a>
+                    </div>
+                    
+                    <div class="download-item">
+                        <h3>UXXXXXXXX</h3>
+                        <p>UXXXXXXXXX</p>
+                        <a href="#" class="download-btn">BAIXAR UXXXXX</a>
+                    </div>
+                    
+                </div>
+            </section>
+            
+            <section class="hero pixel-border">
+                <h2>OBRIGADO!</h2>
+            </section>
+
+                <h3></h3>
+                <footer class="pixel-border site-footer">
+
+                    <div class="footer-box">
+                        <h2>Créditos</h2>
+                        <p>Jogo educativo desenvolvido para fins acadêmicos - Baseado no conto <em>"Pai contra Mãe"</em> de Machado de Assis. Todos os direitos reservados © 2025</p>
+                    </div>
+                </footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Pesquisa - Jogo "Pai contra Mãe"</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-image: url('noiteato2.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            font-family: 'Press Start 2P', cursive;
+            color: #FFFFFF;
+            padding: 10px;
+            image-rendering: pixelated;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container { 
+            width: 100%; 
+            max-width: 1400px;
+            margin: 0 auto; 
+            position: relative; 
+        }
+        .pixel-border { 
+            position: relative; 
+            border: 4px solid #FFFFFF; 
+            box-shadow: 0 0 0 4px #000000; 
+            background: rgba(0, 100, 0, 0.8); 
+        }
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 20px 30px;
+            background: #004d00; 
+            margin-bottom: 25px;
+        }
+        header h1 { 
+            font-size: 1.8em;
+            text-shadow: 3px 3px 0 #000; 
+            letter-spacing: 1px; 
+            white-space: nowrap;
+        }
+        nav ul { 
+            list-style: none; 
+            display:flex; 
+            gap:25px;
+            flex-wrap: wrap;
+        }
+        nav a { 
+            color:#FFFFFF; 
+            text-decoration:none; 
+            font-size:0.95em;
+            padding:10px 12px;
+            transition:all .2s; 
+            text-shadow:1px 1px 0 #000; 
+            position: relative;
+        }
+        nav a:hover, nav a.active { 
+            color:#FFFF00; 
+            transform: translateY(-2px); 
+        }
+        nav a:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #FFFF00;
+            transition: width 0.3s;
+        }
+        nav a:hover:after, nav a.active:after { 
+            width: 100%; 
+        }
+        .content-box { 
+            width: 100%; 
+            padding: 35px;
+            margin-bottom: 30px; 
+            position: relative; 
+        }
+        .content-box h2 { 
+            text-align: center; 
+            font-size: 2em;
+            text-shadow: 3px 3px 0 #000; 
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 4px solid #FFFFFF; 
+            color: #FFFF00; 
+        }
+        fieldset { 
+            border: none; 
+            margin-top: 35px;
+            position: relative; 
+            padding: 25px;
+            background: rgba(0,77,0,0.6); 
+        }
+        legend { 
+            font-size: 1.4em;
+            background-color:#004d00; 
+            padding:12px 25px;
+            border:4px solid #FFF; 
+            margin-bottom:25px;
+            color:#FFFF00; 
+            text-shadow:2px 2px 0 #000; 
+            box-shadow:0 0 0 4px #000; 
+        }
+        label { 
+            display:block; 
+            margin-top:25px;
+            margin-bottom:15px;
+            font-size:0.95em;
+            line-height:1.6;
+            text-shadow:1px 1px 0 #000; 
+            padding-left:30px;
+            position:relative; 
+        }
+        label:before { 
+            content: ">"; 
+            position:absolute; 
+            left:0; 
+            top:0; 
+            color:#FFFF00; 
+            font-size: 1.2em;
+        }
+        input[type="text"], input[type="number"], textarea, select {
+            width:100%; 
+            padding:15px;
+            border:4px solid; 
+            border-color:#000 #fff #fff #000; 
+            background-color:#004d00; 
+            color:#FFF;
+            font-family:'Press Start 2P', cursive; 
+            font-size:0.95em;
+            margin-top:8px;
+            display:block;
+            line-height: 1.6;
+        }
+        input:focus, textarea:focus, select:focus { 
+            outline: 4px dashed #FFFF00; 
+            outline-offset:2px; 
+        }
+        .rating-scale { 
+            display:flex; 
+            justify-content:center; 
+            flex-wrap:wrap; 
+            gap:12px;
+            padding:15px;
+            background-color: rgba(0,0,0,0.3); 
+            margin-top:15px;
+            border:2px solid #FFF; 
+        }
+        .inline-label { 
+            display:inline-flex; 
+            align-items:center; 
+            cursor:pointer; 
+            transition:transform .1s; 
+        }
+        .inline-label:hover { 
+            transform:scale(1.05); 
+        }
+        .inline-label input[type="radio"] { 
+            display:none; 
+        }
+        .inline-label span { 
+            background:#004d00; 
+            padding:12px 18px;
+            border:2px solid #fff; 
+            text-shadow:1px 1px 0 #000; 
+            box-shadow:2px 2px 0 #000; 
+            font-size: 0.95em;
+        }
+        .inline-label input[type="radio"]:checked + span { 
+            background:#000; 
+            color:#FFFF00; 
+            border-color:#FFFF00; 
+            transform:scale(1.1); 
+            box-shadow:0 0 10px #FFFF00, 2px 2px 0 #000; 
+        }
+        .submit-container { 
+            margin-top:50px;
+            text-align:center; 
+        }
+        button[type="submit"] {
+            display:inline-block; 
+            padding:18px 45px;
+            background:#8B0000; 
+            color:#FFF; 
+            border:4px solid; 
+            border-color:#fff #000 #000 #fff;
+            font-family:'Press Start 2P', cursive; 
+            font-size:1.2em;
+            cursor:pointer; 
+            text-shadow:2px 2px 0 #000; 
+            position:relative; 
+            overflow:hidden;
+            transition: all 0.2s;
+        }
+        button[type="submit"]:hover { 
+            background:#A52A2A; 
+            color:#FFFF00; 
+            transform:translateY(-3px); 
+        }
+        footer { 
+            text-align:center; 
+            padding:25px;
+            font-size:0.85em;
+            color:#AAA; 
+            text-shadow:1px 1px 0 #000; 
+            margin-top:25px;
+            line-height: 1.6;
+        }
+        .success-message { 
+            text-align:center; 
+            padding:40px;
+            color:#FFFF00; 
+            font-size: 1.1em;
+            line-height: 1.8;
+            display: none;
+        }
+        .error-message { 
+            background: #0e13b6; 
+            color: #ffffff; 
+            padding: 20px;
+            margin: 20px 0;
+            border: 4px solid #1100ff;
+            text-shadow: 1px 1px 0 #000;
+            text-align: center;
+            font-size: 0.95em;
+            line-height: 1.6;
+            display: none;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 95%;
+            }
+            
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            nav ul {
+                gap: 10px;
+            }
+            
+            nav a {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+            
+            .content-box {
+                padding: 20px;
+            }
+            
+            .content-box h2 {
+                font-size: 1.5em;
+            }
+            
+            legend {
+                font-size: 1.1em;
+                padding: 10px 20px;
+            }
+            
+            label {
+                font-size: 0.85em;
+                padding-left: 25px;
+            }
+            
+            .inline-label span {
+                padding: 10px 15px;
+                font-size: 0.85em;
+            }
+            
+            .rating-scale {
+                gap: 8px;
+            }
+            
+            input[type="text"], input[type="number"], textarea, select {
+                padding: 12px;
+                font-size: 0.85em;
+            }
+            
+            button[type="submit"] {
+                padding: 15px 30px;
+                font-size: 1em;
+            }
+            
+            footer {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.4em;
+            }
+            
+            .content-box h2 {
+                font-size: 1.3em;
+            }
+            
+            legend {
+                font-size: 1em;
+            }
+            
+            label {
+                font-size: 0.8em;
+            }
+            
+            .inline-label span {
+                padding: 8px 12px;
+                font-size: 0.8em;
+            }
+        }
+        
+        .sub-question {
+            margin-left: 20px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+        .sub-question label:before {
+            content: ">>";
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="pixel-border">
+            <h1>PAI CONTRA MÃE</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="download.html">Download</a></li>
+                    <li><a href="pesquisa.html" class="active">Pesquisa</a></li>
+                    <li><a href="material.html">Material</a></li>
+                    <li><a href="tutoriais.html">Tutoriais</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section id="pesquisa">
+                <div class="content-box pixel-border" id="form-wrapper">
+                    <h2>PESQUISA DE OPINIÃO</h2>
+                    <div id="error-container" class="error-message"></div>
+                    <div id="success-message" class="success-message" aria-live="polite">
+                        <h2>OBRIGADO!</h2>
+                        <p>Sua opinião foi registrada com sucesso.</p>
+                        <p><a href="index.html" style="color:#FFFF00; text-decoration:none;">← Voltar à página inicial</a></p>
+                    </div>
+                    
+                    <form id="quizForm" name="quizForm" autocomplete="off">
+                        <fieldset>
+                            <legend>DADOS GERAIS</legend>
+                            <label for="nome">Seu nome (opcional):</label>
+                            <input type="text" id="nome" name="Nome" placeholder="Como gostaria de ser chamado">
+
+                            <label for="escolaridade">Qual seu nível de escolaridade?</label>
+                            <select id="escolaridade" name="Escolaridade" required>
+                                <option value="" disabled selected>Selecione uma opção</option>
+                                <option value="Ensino Fundamental Incompleto">Ensino Fundamental Incompleto</option>
+                                <option value="Ensino Fundamental Completo">Ensino Fundamental Completo</option>
+                                <option value="Ensino Medio Incompleto">Ensino Médio Incompleto</option>
+                                <option value="Ensino Medio Completo">Ensino Médio Completo</option>
+                                <option value="Ensino Superior Incompleto">Ensino Superior Incompleto</option>
+                                <option value="Ensino Superior Completo">Ensino Superior Completo</option>
+                                <option value="Pos-graduacao">Pós-graduação</option>
+                            </select>
+
+                            <label for="idade">Faixa etária:</label>
+                            <select id="idade" name="Idade" required>
+                                <option value="" disabled selected>Selecione sua faixa etária</option>
+                                <option value="15-20">15-20 anos</option>
+                                <option value="21-30">21-30 anos</option>
+                                <option value="31-40">31-40 anos</option>
+                                <option value="41-50">41-50 anos</option>
+                                <option value="51+">51+ anos</option>
+                            </select>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>AVALIAÇÃO DO JOGO</legend>
+                            <label>1. Nota Temática: O quão bem o jogo representou os temas do conto?</label>
+                            <div class="rating-scale" data-name="NotaTematica"></div>
+
+                            <label>2. Nota Engajamento: O quão envolvente foi a narrativa interativa?</label>
+                            <div class="rating-scale" data-name="NotaEngajamento"></div>
+
+                            <label>3. Nota Debate: O quanto o jogo estimulou sua reflexão sobre os temas?</label>
+                            
+                            <div class="sub-question">
+                                <label>3.1. Fomento à Literatura: O quanto o jogo estimulou sua reflexão sobre este tema?</label>
+                                <div class="rating-scale" data-name="NotaFomentoLiteratura"></div>
+                            </div>
+                            
+                            <div class="sub-question">
+                                <label>3.2. Racismo: O quanto o jogo estimulou sua reflexão sobre este tema?</label>
+                                <div class="rating-scale" data-name="NotaRacismo"></div>
+                            </div>
+                            
+                            <div class="sub-question">
+                                <label>3.3. Escravidão: O quanto o jogo estimulou sua reflexão sobre este tema?</label>
+                                <div class="rating-scale" data-name="NotaEscravidao"></div>
+                            </div>
+                            
+                            <div class="sub-question">
+                                <label>3.4. Discussão de gênero: O quanto o jogo estimulou sua reflexão sobre este tema?</label>
+                                <div class="rating-scale" data-name="NotaGenero"></div>
+                            </div>
+
+                            <label>4. Nota Linguagem: A linguagem visual e textual foi adequada?</label>
+                            <div class="rating-scale" data-name="NotaLinguagem"></div>
+
+                            <label>5. Nota Experiência: Qual sua nota para a experiência geral do jogo?</label>
+                            <div class="rating-scale" data-name="NotaExperiencia"></div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>OPINIÕES</legend>
+                            <label for="ponto_forte">6. Ponto Forte: Qual foi o aspecto mais positivo do jogo?</label>
+                            <textarea id="ponto_forte" name="PontoForte" rows="4" required placeholder="Descreva o que mais gostou no jogo"></textarea>
+
+                            <label for="ponto_fraco">7. Ponto Fraco: Que pontos poderiam ser melhorados?</label>
+                            <textarea id="ponto_fraco" name="PontoFraco" rows="4" required placeholder="Descreva o que poderia ser melhorado"></textarea>
+
+                            <label for="ferramenta_educacional">8. Você considera o jogo uma boa ferramenta educacional? Por quê?</label>
+                            <textarea id="ferramenta_educacional" name="FerramentaEducacional" rows="4" required placeholder="Dê sua opinião sobre o potencial educacional"></textarea>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>LEITURA PRÉVIA</legend>
+                            <label>9. Você já havia lido o conto original antes de jogar?</label>
+                            <div class="rating-scale">
+                                <label class="inline-label"><input type="radio" name="LeuConto" value="Sim" required><span>Sim</span></label>
+                                <label class="inline-label"><input type="radio" name="LeuConto" value="Nao"><span>Não</span></label>
+                                <label class="inline-label"><input type="radio" name="LeuConto" value="Parcialmente"><span>Parcialmente</span></label>
+                            </div>
+
+                            <label for="comparacao">10. Como você compara a experiência do jogo com a leitura do conto?</label>
+                            <textarea id="comparacao" name="Comparacao" rows="4" placeholder="Se leu o conto, compare as experiências"></textarea>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>TERMO DE CIÊNCIA</legend>
+                            <label style="text-align: justify;">
+                                <input type="checkbox" name="termo_ciencia" id="termo_ciencia" value="Sim" required style="width: auto; display: inline-block; margin-right: 10px;">
+                                Declaro que estou ciente de que minhas respostas serão utilizadas para fins de estudo e pesquisa acadêmica, e que poderão ser divulgadas e utilizadas em produções científicas e acadêmicas relacionadas ao projeto. Todas as informações serão tratadas de forma anônima e confidencial, em conformidade com as normas éticas de pesquisa.
+                            </label>
+                        </fieldset>
+
+                        <div class="submit-container">
+                            <button type="submit" id="submit-button">ENVIAR RESPOSTAS</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+
+        <footer class="pixel-border">
+            <p>Pesquisa desenvolvida para análise do jogo "Pai contra Mãe" - Todos os direitos reservados © 2025</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cria botões 1..10 nas escalas
+            const ratingScales = document.querySelectorAll('.rating-scale[data-name]');
+            ratingScales.forEach(scale => {
+                const name = scale.dataset.name;
+                let html = '';
+                for (let i = 1; i <= 10; i++) {
+                    html += `<label class="inline-label">
+                                 <input type="radio" name="${name}" value="${i}" required>
+                                 <span>${i}</span>
+                             </label>`;
+                }
+                scale.innerHTML = html;
+            });
+
+            const form = document.getElementById('quizForm');
+            const errorContainer = document.getElementById('error-container');
+            const successMessage = document.getElementById('success-message');
+            const formWrapper = document.getElementById('form-wrapper');
+
+            function showThankYou(submitBtn) {
+                // mostra a mensagem de obrigado e esconde tudo mais
+                errorContainer.style.display = 'none';
+                // esconde o formulário
+                if (form) form.style.display = 'none';
+                // opcional: esconde qualquer outro conteúdo dentro do wrapper, deixando só a mensagem
+                // aqui garantimos que successMessage fique visível
+                successMessage.style.display = 'block';
+
+                // desabilita o botão e altera texto para evitar interações
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = "ENVIADO";
+                }
+
+                // rolar até a mensagem de obrigado (bom para UX em telas pequenas)
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Desabilitar o botão para evitar múltiplos envios
+                const submitButton = document.getElementById('submit-button');
+                submitButton.disabled = true;
+                submitButton.textContent = "ENVIANDO...";
+
+                // Esconder mensagens anteriores
+                errorContainer.style.display = 'none';
+                successMessage.style.display = 'none';
+                errorContainer.textContent = '';
+
+                // Coletar todos os dados do formulário
+                const data = {};
+                
+                // Adicionar campos extras ao data
+                data['Nome'] = document.getElementById('nome').value;
+                data['Escolaridade'] = document.getElementById('escolaridade').value;
+                data['Idade'] = document.getElementById('idade').value;
+                data['PontoForte'] = document.getElementById('ponto_forte').value;
+                data['PontoFraco'] = document.getElementById('ponto_fraco').value;
+                data['FerramentaEducacional'] = document.getElementById('ferramenta_educacional').value;
+                data['Comparacao'] = document.getElementById('comparacao').value;
+                data['termo_ciencia'] = document.getElementById('termo_ciencia').checked ? 'Sim' : 'Não';
+                
+                // Coletar notas de avaliação
+                const ratingFields = [
+                    'NotaTematica', 'NotaEngajamento', 'NotaLinguagem', 'NotaExperiencia',
+                    'NotaFomentoLiteratura', 'NotaRacismo', 'NotaEscravidao', 'NotaGenero'
+                ];
+                ratingFields.forEach(field => {
+                    const selected = document.querySelector(`input[name="${field}"]:checked`);
+                    data[field] = selected ? selected.value : '';
+                });
+                
+                // Coletar leitura do conto
+                const leuConto = document.querySelector('input[name="LeuConto"]:checked');
+                data['LeuConto'] = leuConto ? leuConto.value : '';
+
+                // URL do Web App do Google Apps Script (mantive o seu)
+                const scriptURL = "https://script.google.com/macros/s/AKfycby6O70bDY5XN9v2SJpTdqcrhktNAVu8h5HFn9LgJstbTD-rgb9aFpKxJKKMvrCXQfUfYg/exec";
+                
+                // Usando um proxy CORS para contornar o problema, se necessário
+                const corsProxy = "https://corsproxy.io/?";
+                const targetURL = encodeURIComponent(scriptURL);
+
+                // Faz o envio (se não quiser enviar, comente o fetch e chame showThankYou(submitButton) diretamente)
+                fetch(corsProxy + targetURL, {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: { 
+                        "Content-Type": "application/json" 
+                    }
+                })
+                .then(response => {
+                    // mesmo que a resposta não seja OK, vamos mostrar a mensagem de obrigado conforme pedido
+                    // (apenas logamos se houver problema)
+                    if (!response.ok) {
+                        console.warn('Resposta de rede não foi OK, status:', response.status);
+                    }
+                    // tentamos ler JSON, mas não é obrigatório para continuar
+                    return response.json().catch(() => ({}));
+                })
+                .then(res => {
+                    // independente do resultado, esconder tudo e mostrar a mensagem de obrigado
+                    showThankYou(submitButton);
+                    // opcional: limpar o formulário (não visível, mas deixamos limpo)
+                    try { form.reset(); } catch(e) {}
+                })
+                .catch(err => {
+                    // em caso de erro de fetch, também mostramos a mensagem de obrigado (conforme solicitado)
+                    console.error('Erro de fetch:', err);
+                    showThankYou(submitButton);
+                    try { form.reset(); } catch(e) {}
+                });
+            });
+        });
+    </script>
+</body>
+</html>

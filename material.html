@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material de Apoio - Pai Contra Mãe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-image: url('floresta_luarn.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            font-family: 'Press Start 2P', cursive;
+            color: #FFFFFF;
+            padding: 10px;
+            image-rendering: pixelated;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 1400px; /* Aumentado de 1200px para 1400px */
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Pixel border effect */
+        .pixel-border {
+            position: relative;
+            border: 4px solid #FFFFFF;
+            box-shadow: 0 0 0 4px #000000;
+            background: rgba(0, 100, 0, 0.8);
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px; /* Aumentado o padding */
+            background: #004d00;
+            margin-bottom: 25px; /* Aumentada a margem */
+        }
+        header h1 {
+            font-size: 1.8em; /* Aumentado o tamanho */
+            text-shadow: 3px 3px 0 #000;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        nav ul { 
+            list-style: none; 
+            display: flex; 
+            gap: 25px; /* Aumentado o gap */
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 0.95em; /* Aumentado ligeiramente */
+            padding: 10px 12px; /* Aumentado o padding */
+            transition: all 0.2s;
+            position: relative;
+            text-shadow: 1px 1px 0 #000;
+        }
+        nav a:hover, nav a.active { color: #FFFF00; transform: translateY(-2px); }
+        nav a:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #FFFF00;
+            transition: width 0.3s;
+        }
+        nav a:hover:after, nav a.active:after { width: 100%; }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 30px; /* Aumentado o padding */
+            text-align: center;
+            margin-bottom: 35px; /* Aumentada a margem */
+        }
+        .hero h2 {
+            font-size: 2.2em; /* Aumentado o tamanho */
+            text-shadow: 4px 4px 0 #000;
+            margin-bottom: 25px; /* Aumentada a margem */
+            color: #FFFF00;
+            line-height: 1.4;
+        }
+        .hero p {
+            font-size: 1.05em; /* Aumentado ligeiramente */
+            line-height: 1.8; /* Aumentado o line-height */
+            max-width: 1000px; /* Aumentado a largura máxima */
+            margin-bottom: 35px; /* Aumentada a margem */
+            text-shadow: 2px 2px 0 #000;
+            text-align: justify;
+            hyphens: auto; /* Melhora a quebra de palavras */
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 35px; /* Aumentado o padding */
+            margin-bottom: 35px; /* Aumentada a margem */
+        }
+        .content-section h2 {
+            color: #FFFF00;
+            margin-bottom: 25px; /* Aumentada a margem */
+            text-shadow: 3px 3px 0 #000;
+            font-size: 1.8em; /* Aumentado o tamanho */
+            border-bottom: 3px solid #FFFF00;
+            padding-bottom: 15px;
+        }
+        .content-section h3 {
+            color: #FFFF00;
+            margin: 25px 0 15px 0; /* Aumentada a margem */
+            text-shadow: 2px 2px 0 #000;
+            font-size: 1.4em; /* Tamanho para subtítulos */
+        }
+        .content-section p {
+            font-size: 0.95em; /* Aumentado ligeiramente */
+            line-height: 1.8; /* Aumentado o line-height */
+            margin-bottom: 25px; /* Aumentada a margem */
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        /* Text Content Area */
+        .text-content {
+            background: rgba(0, 77, 0, 0.7);
+            padding: 25px; /* Aumentado o padding */
+            margin-bottom: 25px; /* Aumentada a margem */
+            line-height: 1.8; /* Aumentado o line-height */
+            text-align: justify;
+            hyphens: auto; /* Melhora a quebra de palavras */
+        }
+
+        /* Podcast Container */
+        .podcast-container {
+            margin-bottom: 35px;
+            border: 3px solid #FFFFFF;
+            box-shadow: 0 0 0 3px #000000;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Aumentado o minmax */
+            gap: 25px; /* Aumentado o gap */
+            margin: 35px 0; /* Aumentada a margem */
+        }
+        .gallery-item {
+            border: 4px solid #FFFFFF;
+            box-shadow: 0 0 0 4px #000000;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            transition: transform 0.3s;
+            position: relative;
+        }
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+        }
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            font-size: 0.8em;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .gallery-item:hover .gallery-caption {
+            opacity: 1;
+        }
+
+        /* Download Section */
+        .download-section {
+            padding: 35px; /* Aumentado o padding */
+            text-align: center;
+        }
+        .download-section h2 {
+            color: #FFFF00;
+            margin-bottom: 35px; /* Aumentada a margem */
+            text-shadow: 3px 3px 0 #000;
+            font-size: 1.8em; /* Aumentado o tamanho */
+            border-bottom: 3px solid #FFFF00;
+            padding-bottom: 15px;
+        }
+        .download-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Aumentado o minmax */
+            gap: 25px; /* Aumentado o gap */
+        }
+        .download-item {
+            background: rgba(0, 77, 0, 0.7);
+            padding: 25px; /* Aumentado o padding */
+            border: 4px solid #FFFFFF;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .download-item:hover {
+            background: rgba(0, 100, 0, 0.9);
+            transform: translateY(-5px);
+        }
+        .download-item h3 {
+            color: #FFFF00;
+            margin-bottom: 20px; /* Aumentada a margem */
+            text-shadow: 2px 2px 0 #000;
+            font-size: 1.2em; /* Aumentado o tamanho */
+        }
+        .download-item p {
+            font-size: 0.85em; /* Aumentado ligeiramente */
+            line-height: 1.7; /* Aumentado o line-height */
+            margin-bottom: 20px; /* Aumentada a margem */
+            flex-grow: 1;
+        }
+        .download-btn {
+            display: inline-block;
+            padding: 12px 25px; /* Aumentado o padding */
+            background: #8B0000;
+            color: white;
+            border: 4px solid;
+            border-color: #fff #000 #000 #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9em; /* Aumentado ligeiramente */
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            text-shadow: 2px 2px 0 #000;
+            margin-top: auto;
+        }
+        .download-btn:hover {
+            background: #A52A2A;
+            color: #FFFF00;
+            transform: translateY(-3px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px; /* Aumentado o padding */
+            font-size: 0.8em; /* Aumentado ligeiramente */
+            color: #AAA;
+            text-shadow: 1px 1px 0 #000;
+            margin-top: 25px; /* Aumentada a margem */
+            line-height: 1.6;
+        }
+
+        .footer-small {
+            font-size: 12px; /* ajuste como quiser */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 95%;
+            }
+            
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            .download-items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            nav ul {
+                gap: 10px;
+            }
+            
+            nav a {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+            
+            .hero {
+                padding: 30px 15px;
+            }
+            
+            .hero h2 {
+                font-size: 1.6em;
+            }
+            
+            .hero p {
+                font-size: 0.9em;
+                text-align: left;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .content-section h2 {
+                font-size: 1.4em;
+            }
+            
+            .content-section h3 {
+                font-size: 1.2em;
+            }
+            
+            .text-content {
+                padding: 20px;
+            }
+            
+            .image-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+            
+            .download-section {
+                padding: 20px;
+            }
+            
+            .download-items {
+                grid-template-columns: 1fr;
+            }
+            
+            .download-item {
+                padding: 20px;
+            }
+            
+            .download-item h3 {
+                font-size: 1.1em;
+            }
+            
+            .download-btn {
+                padding: 10px 20px;
+                font-size: 0.8em;
+            }
+            
+            footer {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.4em;
+            }
+            
+            .hero h2 {
+                font-size: 1.4em;
+            }
+            
+            .content-section h2 {
+                font-size: 1.2em;
+            }
+            
+            .content-section h3 {
+                font-size: 1em;
+            }
+            
+            .download-section h2 {
+                font-size: 1.4em;
+            }
+            
+            .download-item h3 {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="pixel-border">
+            <h1>PAI CONTRA MÃE</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="download.html">Download</a></li>
+                    <li><a href="pesquisa.html">Pesquisa</a></li>
+                    <li><a href="material.html" class="active">Material</a></li>
+                    <li><a href="tutoriais.html">Tutoriais</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero pixel-border">
+                <h2>MATERIAL DE APOIO</h2>
+                <p>Encontre aqui recursos complementares para aprofundar sua compreensão do jogo e do contexto histórico de "Pai Contra Mãe". Explore materiais didáticos, análises literárias e recursos visuais que enriquecem a experiência educacional.</p>
+            </section>
+
+            <section class="pixel-border content-section">
+                <h2>CONTEXTO HISTÓRICO</h2>
+                <div class="text-content">
+                    <p>O jogo Pai contra Mãe é inspirado no conto homônimo de Machado de Assis, publicado em 1906, que retrata de forma crítica e irônica a sociedade brasileira do século XIX. A história se passa em um período em que a escravidão no Brasil ainda moldava profundamente a estrutura social, econômica e cultural do país.</p>
+                    <p>A escravidão foi oficialmente abolida apenas em 1888, com a assinatura da Lei Áurea. Antes disso, milhares de homens, mulheres e crianças negros eram submetidos a condições desumanas, explorados como mão de obra e tratados como propriedade. Mesmo após a abolição, os resquícios desse sistema continuaram presentes na sociedade, reforçando desigualdades que perduram até hoje.</p>
+                    <p>Machado de Assis, com sua escrita marcada pela ironia e pela crítica social, apresenta nesse conto uma reflexão amarga sobre a pobreza, a sobrevivência e a moralidade em uma sociedade desigual. O título já antecipa o dilema: de um lado, o pai pobre, lutando para sustentar a família; do outro, a mãe escravizada, que luta pela própria liberdade e dignidade.</p>
+                    <p>O jogo busca transportar o jogador para esse contexto histórico marcado por tensões sociais, incentivando a reflexão sobre escolhas difíceis e as consequências da desigualdade. Mais do que uma simples adaptação, ele é também uma forma de aproximar o público contemporâneo da literatura machadiana, estimulando debates sobre a escravidão, o racismo estrutural e os desafios de sobrevivência em uma sociedade profundamente injusta.</p>
+                </div>
+
+                <h2>PODCAST: ANÁLISE DO CONTO</h2>
+                <div class="podcast-container">
+                    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/episode/7E34LMdjat3SdjwBlfK88L?utm_source=generator&t=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
+
+                <h3>PODCAST ADICIONAL: DEBATE SOBRE A OBRA</h3>
+                <div class="podcast-container">
+                    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/episode/2oHJlBVCCLsKQ3RhnYlUDq?utm_source=generator&theme=0&t=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
+                <!--
+                <h2>ANÁLISE EM VÍDEO</h2>
+                <div class="text-content" style="text-align: center;">
+                    <p>Esta é uma análise do conto através da <a href="https://www.youtube.com/@Didosseia" target="_blank" style="color: #FFFF00;">Dido cast</a>.</p>
+                </div>-->
+                
+                <h2>GALERIA DE IMAGENS</h2>
+                <div class="image-gallery">
+                    <div class="gallery-item">
+                        <img src="mata dia rework.png" alt="Cena da mata durante o dia">
+                        <div class="gallery-caption">Cena da mata durante o dia</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="rua comercio alternativa.png" alt="Rua com comércio no período imperial">
+                        <div class="gallery-caption">Rua com comércio no período imperial</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="anuncioarm.png" alt="Anúncio de recompensa por escravizado fugitivo">
+                        <div class="gallery-caption">Anúncio de recompensa por escravizado fugitivo</div>
+                    </div>
+                    <div class="gallery-item">
+                        <img src="fundo cidade noite.png" alt="Vista noturna da cidade imperial">
+                        <div class="gallery-caption">Vista noturna da cidade imperial</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="pixel-border download-section">
+                <h2>MATERIAIS PARA DOWNLOAD</h2>
+                <div class="download-items">
+                    <div class="download-item">
+                        <h3>GUIA DO PROFESSOR</h3>
+                        <p>Material completo com sugestões de atividades, discussões em sala de aula, planos de aula e formas de integrar o jogo ao currículo escolar de Literatura, História e Sociologia.</p>
+                        <a href="https://www.dropbox.com/scl/fi/bu5utm68r9byry75a7cae/Guia-Pedag-gico-para-o-Jogo-_Pai-contra-M-e__-Ferramenta-de-Letramento-Antirracista.pdf?rlkey=y6pgco9tmt4ezdw3q7ky61oo2&st=riemc726&dl=1" class="download-btn">BAIXAR PDF</a>
+                    </div>
+                    
+                    <div class="download-item">
+                        <h3>ANÁLISE LITERÁRIA</h3>
+                        <p>Estudo aprofundado do conto original de Machado de Assis, com comparações entre a obra literária e a adaptação em jogo. Inclui análise de personagens, temas e contexto histórico.</p>
+                        <a href="#" class="download-btn">BAIXAR PDF</a>
+                    </div>
+                    
+                
+                </div>
+            </section>
+        </main>
+
+        <section>
+            <footer class="pixel-border footer-small">
+                <p>Jogo educativo desenvolvido para fins acadêmicos - Baseado no conto "Pai contra Mãe" de Machado de Assis</p>
+                <p>Todos os direitos reservados © 2025</p>
+            </footer>
+        </section>
+
+    </div>
+</body>
+</html>

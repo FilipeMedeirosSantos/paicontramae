@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pai Contra Mãe - Jogo Educativo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-image: url('arcosdalapatrans.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center center;
+            font-family: 'Press Start 2P', cursive;
+            color: #FFFFFF;
+            padding: 50px;
+            image-rendering: pixelated;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Pixel border effect */
+        .pixel-border {
+            position: relative;
+            border: 4px solid #FFFFFF;
+            box-shadow: 0 0 0 4px #000000;
+            background: rgba(0, 100, 0, 0.8);
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: #004d00;
+            margin-bottom: 30px;
+        }
+        header h1 {
+            font-size: 1.8em;
+            text-shadow: 3px 3px 0 #000;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+        nav ul { 
+            list-style: none; 
+            display: flex; 
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 0.95em;
+            padding: 10px 12px;
+            transition: all 0.2s;
+            position: relative;
+            text-shadow: 2px 1px 0 #000;
+            white-space: nowrap;
+        }
+        nav a:hover, nav a.active { color: #FFFF00; transform: translateY(-2px); }
+        nav a:after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #FFFF00;
+            transition: width 0.3s;
+        }
+        nav a:hover:after, nav a.active:after { width: 100%; }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 30px;
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        .hero h2 {
+            font-size: 2.2em;
+            text-shadow: 4px 4px 0 #000;
+            margin-bottom: 25px;
+            color: #FFFF00;
+            line-height: 1.4;
+        }
+        .hero p {
+            font-size: 1.05em;
+            line-height: 1.8;
+            max-width: 1000px;
+            margin-bottom: 35px;
+            text-shadow: 2px 2px 0 #000;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        /* Banner Section */
+        .banner-container {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        .banner-image {
+            max-width: 100%;
+            height: auto;
+            border: 4px solid #FFFFFF;
+            box-shadow: 0 0 0 4px #000000;
+            image-rendering: pixelated;
+        }
+
+        /* Game Info */
+        .game-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+            padding: 35px;
+        }
+        .info-card {
+            padding: 25px;
+            background: rgba(0, 77, 0, 0.7);
+            border: 4px solid #FFFFFF;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .info-card:hover {
+            transform: scale(1.05);
+            background: rgba(0, 100, 0, 0.9);
+        }
+        .info-card h3 {
+            color: #FFFF00;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0 #000;
+            font-size: 1.3em;
+        }
+        .info-card p { 
+            font-size: 0.85em;
+            line-height: 1.7;
+            flex-grow: 1;
+            hyphens: auto;
+        }
+
+        /* Carousel (one image at a time) */
+        .screenshots {
+            padding: 35px;
+            text-align: center;
+        }
+        .screenshots h2 {
+            font-size: 1.6em;
+            margin-bottom: 35px;
+            text-shadow: 3px 3px 0 #000;
+        }
+        .carousel {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            aspect-ratio: 16 / 9;
+            background: rgba(0,0,0,0.25);
+            border: 4px solid #FFFFFF;
+            box-shadow: 0 0 0 4px #000000;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel-slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(1);
+            transition: opacity 0.8s ease, transform 0.6s ease;
+        }
+        .carousel-slide.active { opacity: 1; z-index: 2; }
+        .carousel-slide img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            image-rendering: pixelated;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        }
+        .carousel-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 5;
+        }
+        .carousel-indicators button {
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 2px solid #fff; background: rgba(0,0,0,0.3); cursor: pointer;
+        }
+        .carousel-indicators button.active {
+            background: #FFFF00; border-color: #000;
+        }
+
+        /* CTA Buttons */
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin: 45px 0;
+            flex-wrap: wrap;
+        }
+        .cta-button {
+            padding: 18px 35px;
+            background: #004d00;
+            color: white;
+            border: 4px solid;
+            border-color: #fff #000 #000 #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            text-shadow: 2px 2px 0 #000;
+            text-align: center;
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.4;
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cta-button:hover { background: #006400; color: #FFFF00; transform: translateY(-5px); }
+        .cta-button.download { background: #8B0000; }
+        .cta-button.download:hover { background: #A52A2A; }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px;
+            font-size: 0.75em;
+            color: #AAA;
+            text-shadow: 1px 1px 0 #000;
+            margin-top: 25px;
+            line-height: 1.6;
+        }
+
+        /* Botão Flutuante de Bug */
+        .bug-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            padding: 15px 25px;
+            background: #8B0000;
+            color: #FFF;
+            border: 4px solid;
+            border-color: #fff #000 #000 #fff;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8em;
+            cursor: pointer;
+            text-shadow: 2px 2px 0 #000;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 4px 4px 0 #000;
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.3;
+            text-align: center;
+            min-height: auto;
+        }
+        
+        .bug-button:hover {
+            background: #A52A2A;
+            color: #FFFF00;
+            transform: translateY(-3px);
+            box-shadow: 6px 6px 0 #000;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 95%;
+            }
+            
+            header {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            nav ul {
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 1.8em;
+            }
+            
+            .game-info {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .cta-button {
+                font-size: 0.95em;
+                padding: 16px 25px;
+                min-height: 65px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                max-width: 100%;
+            }
+            
+            header {
+                padding: 15px;
+            }
+            
+            nav ul {
+                gap: 10px;
+            }
+            
+            nav a {
+                font-size: 0.8em;
+                padding: 8px;
+            }
+            
+            .hero {
+                padding: 30px 15px;
+            }
+            
+            .hero h2 {
+                font-size: 1.5em;
+            }
+            
+            .hero p {
+                font-size: 0.9em;
+                text-align: left;
+            }
+            
+            .game-info {
+                padding: 20px;
+            }
+            
+            .info-card {
+                padding: 20px;
+            }
+            
+            .info-card h3 {
+                font-size: 1.1em;
+            }
+            
+            .info-card p {
+                font-size: 0.8em;
+            }
+            
+            .screenshots {
+                padding: 20px;
+            }
+            
+            .screenshots h2 {
+                font-size: 1.3em;
+            }
+            
+            .carousel {
+                aspect-ratio: 4 / 3;
+            }
+            
+            .cta-buttons { 
+                flex-direction: column; 
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+                padding: 14px 20px;
+                font-size: 0.85em;
+                min-height: 60px;
+                line-height: 1.3;
+            }
+            
+            footer {
+                padding: 15px;
+                font-size: 0.7em;
+            }
+            
+            .bug-button {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 18px;
+                font-size: 0.7em;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.4em;
+            }
+            
+            .hero h2 {
+                font-size: 1.3em;
+            }
+            
+            .info-card h3 {
+                font-size: 1em;
+            }
+            
+            .screenshots h2 {
+                font-size: 1.1em;
+            }
+            
+            .cta-button {
+                font-size: 0.75em;
+                padding: 12px 15px;
+                min-height: 55px;
+                line-height: 1.2;
+            }
+            
+            .bug-button {
+                bottom: 15px;
+                right: 15px;
+                padding: 10px 14px;
+                font-size: 0.6em;
+                line-height: 1.2;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .cta-button {
+                font-size: 0.7em;
+                padding: 10px 12px;
+                min-height: 50px;
+            }
+            
+            .bug-button {
+                padding: 8px 12px;
+                font-size: 0.55em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="pixel-border">
+            <h1>PAI CONTRA MÃE</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Início</a></li>
+                    <li><a href="download.html">Download</a></li>
+                    <li><a href="pesquisa.html">Pesquisa</a></li>
+                    <li><a href="material.html">Material</a></li>
+                    <li><a href="tutoriais.html">Tutoriais</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero pixel-border">
+                <h2>Vivencie a História.</h2> 
+                <h2>Sinta o Peso das Escolhas.</h2>
+                <p>Pai Contra Mãe é uma experiência narrativa que transporta você para o Rio de Janeiro do século XIX, recriando o impactante conto de Machado de Assis. Mais que um jogo, é uma imersão em um dos períodos mais complexos da história brasileira, colocando o poder da decisão em suas mãos.</p>
+                <p>Assuma o papel de Cândido Neves, um caçador de escravos fugidos, e enfrente os dilemas brutais de um homem encurralado pela miséria. Suas escolhas definem a história, alterando o destino dos personagens e levando a múltiplos finais possíveis.</p>
+
+                <div class="cta-buttons">
+                    <a href="download.html" class="cta-button download">BAIXAR AGORA</a>
+                    <a href="#sobre" class="cta-button">SAIBA MAIS</a>
+                </div>
+            </section>
+
+            <section class="banner-container">
+                <img src="Pcapamenu.png" alt="Banner do Jogo Pai Contra Mãe" class="banner-image">
+            </section>
+            
+            <section id="sobre" class="pixel-border game-info">
+                <div class="info-card">
+                    <h3>SOBRE O JOGO</h3>
+                    <p>Baseado no conto "Pai contra Mãe" de Machado de Assis, este jogo leva você a vivenciar os dilemas morais de Cândido Neves, um caçador de escravos no Rio Imperial. Explore as ruas da cidade, tome decisões difíceis e enfrente as consequências de suas ações em uma narrativa rica e emocionante.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>OBJETIVO EDUCACIONAL</h3>
+                    <p>Desenvolvido para uso em sala de aula, o jogo estimula a reflexão sobre a escravidão, relações de poder e dilemas éticos na sociedade brasileira do século XIX. Uma ferramenta pedagógica inovadora para discutir literatura, história e valores morais.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>COMO JOGAR</h3>
+                    <p>Tomando decisões que afetam a narrativa, você experimentará diferentes perspectivas e consequências de suas escolhas, com múltiplos finais possíveis. Suas ações determinam o destino dos personagens e o desfecho da história.</p>
+                </div>
+            </section>
+
+            <section class="pixel-border screenshots">
+                <h2>IMAGENS DO JOGO</h2>
+
+                <div class="carousel" id="carousel">
+                    <div class="carousel-slide active">
+                        <img src="mata dia rework.png" alt="Cena do jogo - Mata dia">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="rua comercio alternativa.png" alt="Cena do jogo - Rua comércio">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="anuncioarm.png" alt="Cena do jogo - Cidade noite">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="fundo cidade noite.png" alt="Cena do jogo - Cidade noite">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="noiteato2.png" alt="Cena do jogo - Cidade noite">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="tarderio.png" alt="Cena do jogo - Cidade noite">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="armazem.png" alt="Cena do jogo - Cidade noite">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="gregorio.png" alt="Cena do jogo - Cidade noite">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="floresta 3 noite new.png" alt="Cena do jogo - Cidade noite">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="navio africa.png" alt="Cena do jogo - Cidade noite">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="menupedinte.png" alt="Cena do jogo - Cidade noite">
+                    </div>
+                    <div class="carousel-indicators" id="carousel-indicators" aria-hidden="false"></div>
+                </div>
+            </section>
+
+            <div class="cta-buttons">
+                <a href="download.html" class="cta-button download">BAIXAR VERSÃO COMPLETA</a>
+                <a href="pesquisa.html" class="cta-button">PARTICIPAR DA PESQUISA</a>
+            </div>
+        </main>
+
+        <section>
+        <footer class="pixel-border">
+            <p>Jogo educativo desenvolvido para fins acadêmicos - Baseado no conto "Pai contra Mãe" de Machado de Assis</p>
+            <p>Todos os direitos reservados © 2025</p>
+        </footer>
+        </section>
+    </div>
+
+    <!-- Botão Flutuante para Relatar Bugs -->
+    <a href="bug_report.html" class="bug-button">
+        RELATAR BUG
+    </a>
+
+    <script>
+        (function(){
+            const intervalMs = 5000;
+            const carousel = document.getElementById('carousel');
+            if (!carousel) return;
+
+            const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+            const indicatorsContainer = document.getElementById('carousel-indicators');
+
+            let current = 0;
+            let timer = null;
+
+            // cria indicadores
+            slides.forEach((_, idx) => {
+                const btn = document.createElement('button');
+                if (idx === 0) btn.classList.add('active');
+                btn.setAttribute('aria-label', 'Ir para slide ' + (idx + 1));
+                btn.addEventListener('click', () => {
+                    goToSlide(idx);
+                    resetTimer();
+                });
+                indicatorsContainer.appendChild(btn);
+            });
+
+            const indicators = Array.from(indicatorsContainer.children);
+
+            function showSlide(index) {
+                slides.forEach((s, i) => {
+                    s.classList.toggle('active', i === index);
+                });
+                indicators.forEach((b, i) => b.classList.toggle('active', i === index));
+            }
+
+            function goToSlide(index) {
+                current = (index + slides.length) % slides.length;
+                showSlide(current);
+            }
+
+            function nextSlide() { goToSlide(current + 1); }
+
+            function resetTimer() {
+                if (timer) clearInterval(timer);
+                timer = setInterval(nextSlide, intervalMs);
+            }
+
+            showSlide(current);
+            resetTimer();
+
+            // pausa ao passar o mouse
+            carousel.addEventListener('mouseenter', () => { if (timer) clearInterval(timer); });
+            carousel.addEventListener('mouseleave', () => { resetTimer(); });
+
+            // pausa quando aba não visível
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    if (timer) clearInterval(timer);
+                } else { resetTimer(); }
+            });
+        })();
+    </script>
+</body>
+</html>
