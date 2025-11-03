@@ -481,75 +481,58 @@
             const form = document.getElementById('bugForm');
             const errorContainer = document.getElementById('error-container');
             const successMessage = document.getElementById('success-message');
-            const formWrapper = document.getElementById('form-wrapper');
+            const submitButton = document.getElementById('submit-button');
 
-            function showThankYou(submitBtn) {
+            // 
+            // ⬇️ ### COLE A URL QUE VOCÊ COPIOU NA PARTE 3 AQUI ### ⬇️
+            // 
+            const scriptURL = "https://script.google.com/macros/s/AKfycbwev9zS_mFngXrsz6xWaDmCHeWQ7fj5oDsV6HY3GQu1PJATWjkRSBWoyAkRXGWAOjjT/exec";
+
+            // Sua função original de agradecimento
+            function showThankYou() {
                 errorContainer.style.display = 'none';
                 if (form) form.style.display = 'none';
                 successMessage.style.display = 'block';
 
-                if (submitBtn) {
-                    submitBtn.disabled = true;
-                    submitBtn.textContent = "ENVIADO";
+                if (submitButton) {
+                    submitButton.disabled = true;
+                    submitButton.textContent = "ENVIADO";
                 }
-
                 successMessage.scrollIntoView({ behavior: 'smooth' });
             }
 
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
-                const submitButton = document.getElementById('submit-button');
+
                 submitButton.disabled = true;
                 submitButton.textContent = "ENVIANDO...";
-
                 errorContainer.style.display = 'none';
-                successMessage.style.display = 'none';
                 errorContainer.textContent = '';
 
-                const data = {};
-                
-                data['Nome'] = document.getElementById('nome').value;
-                data['Email'] = document.getElementById('email').value;
-                data['TituloBug'] = document.getElementById('titulo_bug').value;
-                data['DescricaoBug'] = document.getElementById('descricao_bug').value;
-                data['PassosReproduzir'] = document.getElementById('passos_reproduzir').value;
-                data['ComportamentoEsperado'] = document.getElementById('comportamento_esperado').value;
-                data['ComportamentoObservado'] = document.getElementById('comportamento_observado').value;
-                data['Plataforma'] = document.getElementById('plataforma').value;
-                data['Navegador'] = document.getElementById('navegador').value;
-                data['VersaoJogo'] = document.getElementById('versao_jogo').value;
-                data['OutrasInformacoes'] = document.getElementById('outras_informacoes').value;
-                
-                const gravidade = document.querySelector('input[name="Gravidade"]:checked');
-                data['Gravidade'] = gravidade ? gravidade.value : '';
-
-                const scriptURL = "https://script.google.com/macros/s/AKfycby6O70bDY5XN9v2SJpTdqcrhktNAVu8h5HFn9LgJstbTD-rgb9aFpKxJKKMvrCXQfUfYg/exec";
-                
-                const corsProxy = "https://corsproxy.io/?";
-                const targetURL = encodeURIComponent(scriptURL);
-
-                fetch(corsProxy + targetURL, {
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: { 
-                        "Content-Type": "application/json" 
+                // Envia os dados do formulário diretamente
+                fetch(scriptURL, { 
+                    method: 'POST', 
+                    body: new FormData(form)
+                })
+                .then(response => response.json()) // Espera a resposta JSON do script
+                .then(data => {
+                    if (data.result === "success") {
+                        // Deu certo! Mostra a mensagem de sucesso
+                        showThankYou();
+                        form.reset();
+                    } else {
+                        // Deu erro lá no Apps Script
+                        throw new Error(data.error || 'Erro desconhecido no servidor.');
                     }
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        console.warn('Resposta de rede não foi OK, status:', response.status);
-                    }
-                    return response.json().catch(() => ({}));
-                })
-                .then(res => {
-                    showThankYou(submitButton);
-                    try { form.reset(); } catch(e) {}
-                })
-                .catch(err => {
-                    console.error('Erro de fetch:', err);
-                    showThankYou(submitButton);
-                    try { form.reset(); } catch(e) {}
+                .catch(error => {
+                    // Deu erro na rede ou no script
+                    console.error('Erro!', error.message);
+                    errorContainer.textContent = 'ERRO: Não foi possível enviar o relatório. (' + error.message + ')';
+                    errorContainer.style.display = 'block';
+                    submitButton.disabled = false;
+                    submitButton.textContent = "ENVIAR RELATÓRIO";
+                    errorContainer.scrollIntoView({ behavior: 'smooth' });
                 });
             });
         });

@@ -198,7 +198,31 @@
             object-fit: contain;
             image-rendering: pixelated;
             box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            cursor: zoom-in; /* Indica que a imagem é clicável para zoom */
         }
+        
+        /* NOVAS SETAS DO CARROSSEL */
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.5);
+            color: #FFFFFF;
+            border: 3px solid #FFFFFF;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 2.5em; /* Aumentado para melhor visibilidade */
+            cursor: pointer;
+            padding: 5px 12px; /* Ajustado para o novo tamanho da fonte */
+            line-height: 1;
+            transition: background 0.3s;
+            box-shadow: 0 0 0 3px #000;
+            user-select: none; /* Impede que o texto da seta seja selecionado */
+        }
+        .carousel-arrow:hover { background: rgba(0, 77, 0, 0.8); }
+        .carousel-arrow.prev { left: 15px; }
+        .carousel-arrow.next { right: 15px; }
+
         .carousel-indicators {
             position: absolute;
             bottom: 15px;
@@ -290,6 +314,31 @@
             color: #FFFF00;
             transform: translateY(-3px);
             box-shadow: 6px 6px 0 #000;
+        }
+
+        /* NOVOS ESTILOS DE LIGHTBOX (ZOOM) */
+        #lightbox-overlay {
+            position: fixed;
+            inset: 0; /* atalho para top: 0; right: 0; bottom: 0; left: 0; */
+            background: rgba(0, 0, 0, 0.85);
+            display: none; /* Escondido por padrão */
+            align-items: center;
+            justify-content: center;
+            z-index: 2000; /* Garante que fique acima de tudo */
+            padding: 20px;
+            cursor: pointer; /* Indica que pode fechar clicando no fundo */
+        }
+        #lightbox-overlay.visible {
+            display: flex; /* Mostra quando a classe 'visible' é adicionada */
+        }
+        #lightbox-img {
+            display: block;
+            max-width: 85vw;  /* Ocupa 85% da largura (não tela cheia) */
+            max-height: 85vh; /* Ocupa 85% da altura (não tela cheia) */
+            image-rendering: pixelated;
+            border: 4px solid #FFFFFF;
+            box-shadow: 0 0 0 4px #000000, 0 10px 30px rgba(0,0,0,0.5);
+            cursor: default; /* Cursor padrão na imagem (diferente do fundo) */
         }
 
         /* Responsive adjustments */
@@ -386,6 +435,14 @@
             .carousel {
                 aspect-ratio: 4 / 3;
             }
+
+            /* Esconde setas em telas muito pequenas (opcional) */
+            .carousel-arrow {
+                font-size: 1.8em;
+                padding: 3px 8px;
+                left: 10px;
+            }
+            .carousel-arrow.next { right: 10px; }
             
             .cta-buttons { 
                 flex-direction: column; 
@@ -515,6 +572,9 @@
                 <h2>IMAGENS DO JOGO</h2>
 
                 <div class="carousel" id="carousel">
+                    <button class="carousel-arrow prev" aria-label="Slide anterior">&lt;</button>
+                    <button class="carousel-arrow next" aria-label="Próximo slide">&gt;</button>
+                    
                     <div class="carousel-slide active">
                         <img src="mata dia rework.png" alt="Cena do jogo - Mata dia">
                     </div>
@@ -566,10 +626,13 @@
         </section>
     </div>
 
-    <!-- Botão Flutuante para Relatar Bugs -->
     <a href="bug_report.html" class="bug-button">
         RELATAR BUG
     </a>
+
+    <div id="lightbox-overlay">
+        <img id="lightbox-img" src="" alt="Imagem do jogo em zoom">
+    </div>
 
     <script>
         (function(){
@@ -579,6 +642,13 @@
 
             const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
             const indicatorsContainer = document.getElementById('carousel-indicators');
+            
+            // --- NOVAS CONSTANTES ---
+            const prevButton = carousel.querySelector('.carousel-arrow.prev');
+            const nextButton = carousel.querySelector('.carousel-arrow.next');
+            const lightboxOverlay = document.getElementById('lightbox-overlay');
+            const lightboxImg = document.getElementById('lightbox-img');
+            // ------------------------
 
             let current = 0;
             let timer = null;
@@ -610,6 +680,7 @@
             }
 
             function nextSlide() { goToSlide(current + 1); }
+            function prevSlide() { goToSlide(current - 1); } // <-- NOVA FUNÇÃO
 
             function resetTimer() {
                 if (timer) clearInterval(timer);
@@ -618,6 +689,17 @@
 
             showSlide(current);
             resetTimer();
+            
+            // --- NOVOS EVENT LISTENERS (SETAS) ---
+            prevButton.addEventListener('click', () => {
+                prevSlide();
+                resetTimer();
+            });
+            nextButton.addEventListener('click', () => {
+                nextSlide();
+                resetTimer();
+            });
+            // -------------------------------------
 
             // pausa ao passar o mouse
             carousel.addEventListener('mouseenter', () => { if (timer) clearInterval(timer); });
@@ -629,6 +711,29 @@
                     if (timer) clearInterval(timer);
                 } else { resetTimer(); }
             });
+
+            // --- NOVA LÓGICA DE LIGHTBOX (ZOOM) ---
+            slides.forEach(slide => {
+                const img = slide.querySelector('img');
+                if (img) {
+                    // 1. Abrir o lightbox
+                    img.addEventListener('click', () => {
+                        lightboxImg.src = img.src; // Define a imagem a ser mostrada
+                        lightboxOverlay.classList.add('visible'); // Mostra o overlay
+                        if (timer) clearInterval(timer); // Pausa o carrossel
+                    });
+                }
+            });
+
+            // 2. Fechar o lightbox
+            lightboxOverlay.addEventListener('click', (e) => {
+                // Só fecha se o clique for no fundo (overlay), não na imagem
+                if (e.target === lightboxOverlay) { 
+                    lightboxOverlay.classList.remove('visible');
+                    resetTimer(); // Retoma o carrossel
+                }
+            });
+            // ----------------------------------------
         })();
     </script>
 </body>
